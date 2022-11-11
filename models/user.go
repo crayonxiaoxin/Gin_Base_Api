@@ -21,8 +21,15 @@ func (u *User) Valid() bool {
 }
 
 // 获取所有用户
-func GetAllUsers() (users []User) {
-	utils.DB.Find(&users)
+func GetAllUsers(page int, pageSize int) (users []User, count int64) {
+	if page <= 0 {
+		page = 1
+	}
+	if pageSize <= 0 {
+		pageSize = 10
+	}
+	offset := (page - 1) * pageSize
+	utils.DB.Model(User{}).Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&users)
 	return
 }
 

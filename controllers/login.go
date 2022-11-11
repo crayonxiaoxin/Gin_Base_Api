@@ -8,6 +8,7 @@ import (
 )
 
 // @Title       Login
+// @Summary     登入
 // @Description 登入
 // @Param       username query string true "用户名"
 // @Param       password query string true "密码"

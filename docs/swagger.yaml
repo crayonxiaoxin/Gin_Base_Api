@@ -12,6 +12,7 @@ info:
   contact: {}
   description: Gin API 基础工程
   title: Test API
+  version: v1
 paths:
   /login:
     post:
@@ -36,6 +37,7 @@ paths:
           description: Forbidden
           schema:
             type: user
+      summary: 登入
       tags:
       - login
   /register:
@@ -61,6 +63,7 @@ paths:
           description: Forbidden
           schema:
             type: user
+      summary: 注册
       tags:
       - register
   /user:
@@ -72,11 +75,20 @@ paths:
         name: token
         required: true
         type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: size
+        type: integer
       responses:
         "200":
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      summary: 获取所有用户
       tags:
       - user
     post:
@@ -102,6 +114,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      summary: 添加用户
       tags:
       - user
   /user/{id}:
@@ -123,6 +136,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      summary: 删除用户
       tags:
       - user
     get:
@@ -143,6 +157,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      summary: 通过id获取用户
       tags:
       - user
     put:
@@ -172,6 +187,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      summary: 更新用户
       tags:
       - user
 swagger: "2.0"

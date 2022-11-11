@@ -10,10 +10,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @APIVersion v1
-// @Title Test API
+// @Version     v1
+// @Title       Test API
 // @Description Gin API 基础工程
-// @BasePath /v1
+// @BasePath    /v1
 
 func main() {
 	r := gin.Default()

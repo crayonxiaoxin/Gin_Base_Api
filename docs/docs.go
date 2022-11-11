@@ -22,6 +22,7 @@ const docTemplate = `{
                 "tags": [
                     "login"
                 ],
+                "summary": "登入",
                 "parameters": [
                     {
                         "type": "string",
@@ -60,6 +61,7 @@ const docTemplate = `{
                 "tags": [
                     "register"
                 ],
+                "summary": "注册",
                 "parameters": [
                     {
                         "type": "string",
@@ -98,6 +100,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "获取所有用户",
                 "parameters": [
                     {
                         "type": "string",
@@ -105,6 +108,18 @@ const docTemplate = `{
                         "name": "token",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -121,6 +136,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "添加用户",
                 "parameters": [
                     {
                         "type": "string",
@@ -160,6 +176,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "通过id获取用户",
                 "parameters": [
                     {
                         "type": "string",
@@ -190,6 +207,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "更新用户",
                 "parameters": [
                     {
                         "type": "string",
@@ -233,6 +251,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
+                "summary": "删除用户",
                 "parameters": [
                     {
                         "type": "string",
@@ -278,7 +297,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "v1",
 	Host:             "",
 	BasePath:         "/v1",
 	Schemes:          []string{},

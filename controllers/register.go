@@ -8,6 +8,7 @@ import (
 )
 
 // @Title       Register
+// @Summary     注册
 // @Description 注册
 // @Param       username query string true "用户名"
 // @Param       password query string true "密码"

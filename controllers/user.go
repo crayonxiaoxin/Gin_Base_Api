@@ -11,18 +11,29 @@ import (
 )
 
 // @Title       GetAll
+// @Summary     获取所有用户
 // @Description 获取所有用户
-// @Param       token header string true "登入后返回的token"
+// @Param       token header string true  "登入后返回的token"
+// @Param       page  query  int    false "页码"
+// @Param       size  query  int    false "每页数量"
 // @Tags        user
 // @Success     200 {object} utils.Result
 // @router      /user [get]
 func GetAllUsers(ctx *gin.Context) {
-	users := models.GetAllUsers()
-	var result = utils.Result{ResultCode: utils.SUCCESS, Data: users}
+	page := ctx.Query("page")
+	size := ctx.Query("size")
+	pageInt := utils.Str2Int(page)
+	sizeInt := utils.Str2Int(size)
+	users, count := models.GetAllUsers(int(pageInt), int(sizeInt))
+	data := make(map[string]interface{})
+	data["list"] = users
+	data["count"] = count
+	var result = utils.Result{ResultCode: utils.SUCCESS, Data: data}
 	ctx.JSON(http.StatusOK, result)
 }
 
 // @Title       Get
+// @Summary     通过id获取用户
 // @Description 通过id获取用户
 // @Param       token header string true "登入后返回的token"
 // @Param       id    path   int    true "The key for staticblock"
@@ -48,6 +59,7 @@ func GetUser(ctx *gin.Context) {
 }
 
 // @Title       CreateUser
+// @Summary     添加用户
 // @Description 添加用户
 // @Param       token    header string true "登入后返回的token"
 // @Param       username query  string true "用户名"
@@ -63,6 +75,7 @@ func AddUser(ctx *gin.Context) {
 }
 
 // @Title       Update
+// @Summary     更新用户
 // @Description 更新用户
 // @Param       token    header string true  "登入后返回的token"
 // @Param       id       path   int    true  "The uid you want to update"
@@ -86,6 +99,7 @@ func UpdateUser(ctx *gin.Context) {
 }
 
 // @Title       Delete
+// @Summary     删除用户
 // @Description 删除用户
 // @Param       token header string true "登入后返回的token"
 // @Param       id    path   int    true "The uid you want to delete"
