@@ -1,5 +1,11 @@
 ## Gin Base Api Project
 
+### 下载
+```
+git clone https://github.com/crayonxiaoxin/Gin_Base_Api.git
+```
+
+
 ### 准备
 
 安装命令行工具 swag，用于生成 swagger 文档
@@ -12,10 +18,6 @@ go get -u github.com/swaggo/swag/cmd/swag
 
 ### 运行
 ```
-git clone https://github.com/crayonxiaoxin/Gin_Base_Api.git
-
-cd Gin_Base_Api
-
 go mod tidy
 
 go run main.go
