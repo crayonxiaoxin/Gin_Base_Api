@@ -8,12 +8,11 @@ git clone https://github.com/crayonxiaoxin/Gin_Base_Api.git
 
 ### 准备
 
-安装命令行工具 swag，用于生成 swagger 文档
+安装命令行工具 swag，用于生成 swagger 文档 ([参考资料](https://github.com/swaggo/gin-swagger))
 ```
 go get -u github.com/swaggo/swag/cmd/swag
 ``` 
 
-[参考资料](https://github.com/swaggo/gin-swagger)
 
 
 ### 运行
