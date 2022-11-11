@@ -1,0 +1,177 @@
+basePath: /v1
+definitions:
+  utils.Result:
+    properties:
+      data: {}
+      msg:
+        type: string
+      rc:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Gin API 基础工程
+  title: Test API
+paths:
+  /login:
+    post:
+      description: 登入
+      parameters:
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "403":
+          description: Forbidden
+          schema:
+            type: user
+      tags:
+      - login
+  /register:
+    post:
+      description: 注册
+      parameters:
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+        "403":
+          description: Forbidden
+          schema:
+            type: user
+      tags:
+      - register
+  /user:
+    get:
+      description: 获取所有用户
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      tags:
+      - user
+    post:
+      description: 添加用户
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      description: 删除用户
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: The uid you want to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      tags:
+      - user
+    get:
+      description: 通过id获取用户
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: The key for staticblock
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      tags:
+      - user
+    put:
+      description: 更新用户
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: The uid you want to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户名
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      tags:
+      - user
+swagger: "2.0"
