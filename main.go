@@ -42,5 +42,8 @@ func main() {
 	// swagger 文档
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
+	// 404
+	r.NoRoute(controllers.Error404)
+
 	r.Run(":8081")
 }

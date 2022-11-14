@@ -26,6 +26,8 @@ var (
 
 	ERR_UNKNOWN = ResultCode{99, "Unknown error"}
 
+	ERR_404 = ResultCode{404, "Not found"}
+
 	// token
 	ERR_TOKEN_GENERATE  = ResultCode{1001, "Couldn't generate a token"}
 	ERR_TOKEN_MALFORMED = ResultCode{1002, "That's not even a token"}
