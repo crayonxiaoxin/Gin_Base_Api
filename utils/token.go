@@ -38,8 +38,8 @@ func ParseToken(tokenString string) (ResultCode, jwt.MapClaims) {
 		} else if errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet) {
 			return ERR_TOKEN_EXPIRED, nil
 		} else {
-			ERR_TOKEN_UNKNOWN.Msg = ERR_TOKEN_UNKNOWN.Msg + ": " + err.Error()
-			return ERR_TOKEN_UNKNOWN, nil
+			resultCode := ResultCode{Rc: ERR_PARAMS.Rc, Msg: ERR_TOKEN_UNKNOWN.Msg + ": " + err.Error()}
+			return resultCode, nil
 		}
 	} else {
 		if token.Valid {

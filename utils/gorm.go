@@ -7,6 +7,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type LocalTime time.Time
@@ -40,8 +42,8 @@ func (n LocalTime) Value() (driver.Value, error) {
 
 // 自定义格式化 Gorm Model
 type BaseModel struct {
-	ID        uint       `gorm:"primarykey" json:"id"`
-	CreatedAt *LocalTime `json:"created_at"`
-	UpdatedAt *LocalTime `json:"updated_at"`
-	DeletedAt *LocalTime `gorm:"index" json:"deleted_at"`
+	ID        uint           `gorm:"primarykey" json:"id"`
+	CreatedAt *LocalTime     `json:"created_at"`
+	UpdatedAt *LocalTime     `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"` // gorm.DeletedAt 才有软删除功能
 }

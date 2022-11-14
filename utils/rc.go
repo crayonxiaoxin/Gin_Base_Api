@@ -39,4 +39,8 @@ var (
 	ERR_USER_EXISTS           = ResultCode{1102, "User exists"}
 	ERR_USER_INVALID_USERNAME = ResultCode{1103, "Invalid username"}
 	ERR_USER_INVALID_PASSWORD = ResultCode{1104, "Invalid password"}
+
+	// upload
+	ERR_UPLOAD_MKDIR           = ResultCode{1201, "Couldn't create uploads dir"}
+	ERR_UPLOAD_FILE_NOT_EXISTS = ResultCode{1102, "File not exists"}
 )

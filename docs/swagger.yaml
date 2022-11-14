@@ -40,6 +40,74 @@ paths:
       summary: 登入
       tags:
       - login
+  /media:
+    get:
+      description: 获取所有媒体
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: size
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 获取所有媒体
+      tags:
+      - media
+  /media/{id}:
+    delete:
+      description: 删除文件
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 文件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 删除文件
+      tags:
+      - media
+    get:
+      description: 通过id获取文件
+      parameters:
+      - description: 登入后返回的token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: The key for staticblock
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 通过id获取文件
+      tags:
+      - media
   /register:
     post:
       description: 注册
@@ -66,6 +134,28 @@ paths:
       summary: 注册
       tags:
       - register
+  /upload:
+    post:
+      description: 上传
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      summary: 上传
+      tags:
+      - media
   /user:
     get:
       description: 获取所有用户

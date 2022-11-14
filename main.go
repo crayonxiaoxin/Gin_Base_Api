@@ -20,6 +20,9 @@ func main() {
 
 	docs.SwaggerInfo.BasePath = "/v1"
 
+	// 最大上传大小 8M
+	r.MaxMultipartMemory = 8 << 20
+
 	v1 := r.Group("/v1")
 	{
 		v1.POST("/login", controllers.Login)
@@ -36,6 +39,16 @@ func main() {
 				user.PUT("/:id", controllers.UpdateUser)
 				user.DELETE("/:id", controllers.DeleteUser)
 			}
+
+			// 文件上传
+			v1.POST("/upload", controllers.UploadFile)
+
+			media := v1.Group("/media")
+			{
+				media.GET("/", controllers.GetAllFiles)
+				media.GET("/:id", controllers.GetFile)
+				media.DELETE("/:id", controllers.RemoveFile)
+			}
 		}
 	}
 
@@ -44,6 +57,9 @@ func main() {
 
 	// 404
 	r.NoRoute(controllers.Error404)
+
+	// 设置静态文件路径
+	r.Static("/uploads", "uploads")
 
 	r.Run(":8081")
 }
