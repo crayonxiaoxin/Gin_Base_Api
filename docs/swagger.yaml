@@ -39,7 +39,7 @@ paths:
             type: user
       summary: 登入
       tags:
-      - login
+      - 登入
   /media:
     get:
       description: 获取所有媒体
@@ -64,7 +64,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有媒体
       tags:
-      - media
+      - 媒体相关
   /media/{id}:
     delete:
       description: 删除文件
@@ -86,7 +86,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 删除文件
       tags:
-      - media
+      - 媒体相关
     get:
       description: 通过id获取文件
       parameters:
@@ -107,7 +107,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 通过id获取文件
       tags:
-      - media
+      - 媒体相关
   /register:
     post:
       description: 注册
@@ -133,7 +133,7 @@ paths:
             type: user
       summary: 注册
       tags:
-      - register
+      - 注册
   /upload:
     post:
       description: 上传
@@ -155,7 +155,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 上传
       tags:
-      - media
+      - 媒体相关
   /user:
     get:
       description: 获取所有用户
@@ -180,7 +180,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 获取所有用户
       tags:
-      - user
+      - 用户相关
     post:
       description: 添加用户
       parameters:
@@ -206,7 +206,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 添加用户
       tags:
-      - user
+      - 用户相关
   /user/{id}:
     delete:
       description: 删除用户
@@ -228,7 +228,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 删除用户
       tags:
-      - user
+      - 用户相关
     get:
       description: 通过id获取用户
       parameters:
@@ -249,7 +249,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 通过id获取用户
       tags:
-      - user
+      - 用户相关
     put:
       description: 更新用户
       parameters:
@@ -279,5 +279,5 @@ paths:
             $ref: '#/definitions/utils.Result'
       summary: 更新用户
       tags:
-      - user
+      - 用户相关
 swagger: "2.0"

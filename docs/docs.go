@@ -20,7 +20,7 @@ const docTemplate = `{
             "post": {
                 "description": "登入",
                 "tags": [
-                    "login"
+                    "登入"
                 ],
                 "summary": "登入",
                 "parameters": [
@@ -59,7 +59,7 @@ const docTemplate = `{
             "get": {
                 "description": "获取所有媒体",
                 "tags": [
-                    "media"
+                    "媒体相关"
                 ],
                 "summary": "获取所有媒体",
                 "parameters": [
@@ -97,7 +97,7 @@ const docTemplate = `{
             "get": {
                 "description": "通过id获取文件",
                 "tags": [
-                    "media"
+                    "媒体相关"
                 ],
                 "summary": "通过id获取文件",
                 "parameters": [
@@ -128,7 +128,7 @@ const docTemplate = `{
             "delete": {
                 "description": "删除文件",
                 "tags": [
-                    "media"
+                    "媒体相关"
                 ],
                 "summary": "删除文件",
                 "parameters": [
@@ -161,7 +161,7 @@ const docTemplate = `{
             "post": {
                 "description": "注册",
                 "tags": [
-                    "register"
+                    "注册"
                 ],
                 "summary": "注册",
                 "parameters": [
@@ -200,7 +200,7 @@ const docTemplate = `{
             "post": {
                 "description": "上传",
                 "tags": [
-                    "media"
+                    "媒体相关"
                 ],
                 "summary": "上传",
                 "parameters": [
@@ -233,7 +233,7 @@ const docTemplate = `{
             "get": {
                 "description": "获取所有用户",
                 "tags": [
-                    "user"
+                    "用户相关"
                 ],
                 "summary": "获取所有用户",
                 "parameters": [
@@ -269,7 +269,7 @@ const docTemplate = `{
             "post": {
                 "description": "添加用户",
                 "tags": [
-                    "user"
+                    "用户相关"
                 ],
                 "summary": "添加用户",
                 "parameters": [
@@ -309,7 +309,7 @@ const docTemplate = `{
             "get": {
                 "description": "通过id获取用户",
                 "tags": [
-                    "user"
+                    "用户相关"
                 ],
                 "summary": "通过id获取用户",
                 "parameters": [
@@ -340,7 +340,7 @@ const docTemplate = `{
             "put": {
                 "description": "更新用户",
                 "tags": [
-                    "user"
+                    "用户相关"
                 ],
                 "summary": "更新用户",
                 "parameters": [
@@ -384,7 +384,7 @@ const docTemplate = `{
             "delete": {
                 "description": "删除用户",
                 "tags": [
-                    "user"
+                    "用户相关"
                 ],
                 "summary": "删除用户",
                 "parameters": [

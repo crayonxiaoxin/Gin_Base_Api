@@ -14,7 +14,7 @@ import (
 // @Description 上传
 // @Param       token header   string true "token"
 // @Param       file  formData file   true "文件"
-// @Tags        media
+// @Tags        媒体相关
 // @Success     200 {object} utils.Result
 // @router      /upload [post]
 func UploadFile(ctx *gin.Context) {
@@ -34,7 +34,7 @@ func UploadFile(ctx *gin.Context) {
 // @Description 删除文件
 // @Param       token header string true "token"
 // @Param       id    path   int    true "文件ID"
-// @Tags        media
+// @Tags        媒体相关
 // @Success     200 {object} utils.Result
 // @router      /media/{id} [delete]
 func RemoveFile(ctx *gin.Context) {
@@ -53,7 +53,7 @@ func RemoveFile(ctx *gin.Context) {
 // @Param       token header string true  "登入后返回的token"
 // @Param       page  query  int    false "页码"
 // @Param       size  query  int    false "每页数量"
-// @Tags        media
+// @Tags        媒体相关
 // @Success     200 {object} utils.Result
 // @router      /media [get]
 func GetAllFiles(ctx *gin.Context) {
@@ -74,7 +74,7 @@ func GetAllFiles(ctx *gin.Context) {
 // @Description 通过id获取文件
 // @Param       token header string true "登入后返回的token"
 // @Param       id    path   int    true "The key for staticblock"
-// @Tags        media
+// @Tags        媒体相关
 // @Success     200 {object} utils.Result
 // @router      /media/{id} [get]
 func GetFile(ctx *gin.Context) {

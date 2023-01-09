@@ -12,7 +12,7 @@ import (
 // @Description 登入
 // @Param       username query string true "用户名"
 // @Param       password query string true "密码"
-// @Tags        login
+// @Tags        登入
 // @Success     200 {object} utils.Result
 // @Failure     403 user     not exist
 // @router      /login [post]
