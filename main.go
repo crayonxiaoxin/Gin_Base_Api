@@ -61,5 +61,5 @@ func main() {
 	// 设置静态文件路径
 	r.Static("/uploads", "uploads")
 
-	r.Run(":8081")
+	r.Run(":8083")
 }

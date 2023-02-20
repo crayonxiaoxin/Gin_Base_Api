@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"hello_gin_api/utils"
 )
 
@@ -47,10 +48,12 @@ func AddUser(u *User) utils.Result {
 	} else if len(u.Password) < 6 { // 密码长度
 		result.ResultCode = utils.ERR_USER_INVALID_PASSWORD
 	} else {
-		u := GetUserByLogin(u.Username)
-		if !u.Valid() { // 用户名不存在
+		getu := GetUserByLogin(u.Username)
+		if !getu.Valid() { // 用户名不存在
 			encryptPassword, _ := utils.HashedPassword(u.Password) // 密码加密
 			u.Password = encryptPassword
+			fmt.Println(u)
+			fmt.Println(&u)
 			utils.DB.Create(&u) // 添加
 			result.ResultCode = utils.SUCCESS
 			result.Data = *u
@@ -65,20 +68,20 @@ func AddUser(u *User) utils.Result {
 func UpdateUser(u *User) utils.Result {
 	var result = utils.Result{}
 	if u.ID > 0 { // id 是有效的
-		u2 := GetUser(int(u.ID))
-		if u2.Valid() { // 用户存在
-			if u.Username != u2.Username { // 新用户名与旧用户名不同
+		getu := GetUser(int(u.ID))
+		if getu.Valid() { // 用户存在
+			if u.Username != getu.Username { // 新用户名与旧用户名不同
 				if GetUserByLogin(u.Username).Valid() { // 新用户名已存在，不允许添加
 					result.ResultCode = utils.ERR_USER_EXISTS
 					return result
 				}
 			}
 			if len(u.Password) == 0 { // 不填时，保留原密码
-				u.Password = u2.Password
+				u.Password = getu.Password
 			} else {
-				samePass := utils.EqualsPassword(u.Password, u2.Password) // 比较密码是否变化
-				if samePass {                                             // 不变化，继续使用旧密码
-					u.Password = u2.Password
+				samePass := utils.EqualsPassword(u.Password, getu.Password) // 比较密码是否变化
+				if samePass {                                               // 不变化，继续使用旧密码
+					u.Password = getu.Password
 				} else { // 变化，重新生成密码
 					encryptPassword, _ := utils.HashedPassword(u.Password) // 密码加密
 					u.Password = encryptPassword

@@ -29,6 +29,11 @@ func mySQL() *gorm.DB {
 		db_host := "127.0.0.1:3306"
 		db_name := "beego_api_demo"
 
+		// db_user := "dev"
+		// db_pass := "cXxxKGTiHBGhHEiA"
+		// db_host := "127.0.0.1:3306"
+		// db_name := "dev"
+
 		if db_user == "" || db_pass == "" || db_name == "" {
 			panic("please check db info")
 		}
