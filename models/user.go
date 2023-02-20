@@ -11,8 +11,8 @@ func init() {
 
 type User struct {
 	utils.BaseModel
-	Username string `json:"username"`
-	Password string `json:"password"`
+	UserLogin string `json:"user_login"`
+	UserPass  string `json:"user_pass"`
 }
 
 // 判断用户是否有效
@@ -42,15 +42,15 @@ func GetUser(uid int) (u *User) {
 // 添加用户
 func AddUser(u *User) utils.Result {
 	result := utils.Result{}
-	if len(u.Username) < 3 { // 用户名长度
+	if len(u.UserLogin) < 3 { // 用户名长度
 		result.ResultCode = utils.ERR_USER_INVALID_USERNAME
-	} else if len(u.Password) < 6 { // 密码长度
+	} else if len(u.UserPass) < 6 { // 密码长度
 		result.ResultCode = utils.ERR_USER_INVALID_PASSWORD
 	} else {
-		getu := GetUserByLogin(u.Username)
+		getu := GetUserByLogin(u.UserLogin)
 		if !getu.Valid() { // 用户名不存在
-			encryptPassword, _ := utils.HashedPassword(u.Password) // 密码加密
-			u.Password = encryptPassword
+			encryptUserPass, _ := utils.HashedUserPass(u.UserPass) // 密码加密
+			u.UserPass = encryptUserPass
 			utils.DB.Create(&u) // 添加
 			result.ResultCode = utils.SUCCESS
 			result.Data = *u
@@ -67,21 +67,21 @@ func UpdateUser(u *User) utils.Result {
 	if u.ID > 0 { // id 是有效的
 		getu := GetUser(int(u.ID))
 		if getu.Valid() { // 用户存在
-			if u.Username != getu.Username { // 新用户名与旧用户名不同
-				if GetUserByLogin(u.Username).Valid() { // 新用户名已存在，不允许添加
+			if u.UserLogin != getu.UserLogin { // 新用户名与旧用户名不同
+				if GetUserByLogin(u.UserLogin).Valid() { // 新用户名已存在，不允许添加
 					result.ResultCode = utils.ERR_USER_EXISTS
 					return result
 				}
 			}
-			if len(u.Password) == 0 { // 不填时，保留原密码
-				u.Password = getu.Password
+			if len(u.UserPass) == 0 { // 不填时，保留原密码
+				u.UserPass = getu.UserPass
 			} else {
-				samePass := utils.EqualsPassword(u.Password, getu.Password) // 比较密码是否变化
+				samePass := utils.EqualsUserPass(u.UserPass, getu.UserPass) // 比较密码是否变化
 				if samePass {                                               // 不变化，继续使用旧密码
-					u.Password = getu.Password
+					u.UserPass = getu.UserPass
 				} else { // 变化，重新生成密码
-					encryptPassword, _ := utils.HashedPassword(u.Password) // 密码加密
-					u.Password = encryptPassword
+					encryptUserPass, _ := utils.HashedUserPass(u.UserPass) // 密码加密
+					u.UserPass = encryptUserPass
 				}
 			}
 			utils.DB.Updates(u) // 更新用户
@@ -98,8 +98,8 @@ func UpdateUser(u *User) utils.Result {
 }
 
 // 通过用户名获取用户
-func GetUserByLogin(username string) (u *User) {
-	utils.DB.Find(&u, "username = ?", username)
+func GetUserByLogin(user_login string) (u *User) {
+	utils.DB.Find(&u, "user_login = ?", user_login)
 	return
 }
 

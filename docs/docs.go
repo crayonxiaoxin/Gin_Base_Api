@@ -27,14 +27,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query",
                         "required": true
                     }
@@ -168,14 +168,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query",
                         "required": true
                     }
@@ -283,14 +283,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query",
                         "required": true
                     }
@@ -361,14 +361,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query"
                     }
                 ],

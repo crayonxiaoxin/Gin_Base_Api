@@ -62,15 +62,15 @@ func GetUser(ctx *gin.Context) {
 // @Summary     添加用户
 // @Description 添加用户
 // @Param       token    header string true "登入后返回的token"
-// @Param       username query  string true "用户名"
-// @Param       password query  string true "密码"
+// @Param       user_login query  string true "用户名"
+// @Param       user_pass query  string true "密码"
 // @Tags        用户相关
 // @Success     200 {object} utils.Result
 // @router      /user [post]
 func AddUser(ctx *gin.Context) {
-	username := ctx.Query("username")
-	password := ctx.Query("password")
-	result := models.AddUser(&models.User{Username: username, Password: password})
+	user_login := ctx.Query("user_login")
+	user_pass := ctx.Query("user_pass")
+	result := models.AddUser(&models.User{UserLogin: user_login, UserPass: user_pass})
 	ctx.JSON(http.StatusOK, result)
 }
 
@@ -79,8 +79,8 @@ func AddUser(ctx *gin.Context) {
 // @Description 更新用户
 // @Param       token    header string true  "登入后返回的token"
 // @Param       id       path   int    true  "The uid you want to update"
-// @Param       username query  string true  "用户名"
-// @Param       password query  string false "密码"
+// @Param       user_login query  string true  "用户名"
+// @Param       user_pass query  string false "密码"
 // @Tags        用户相关
 // @Success     200 {object} utils.Result
 // @router      /user/{id} [put]
@@ -90,9 +90,9 @@ func UpdateUser(ctx *gin.Context) {
 	if err != nil {
 		uid = 0
 	}
-	username := ctx.Query("username")
-	password := ctx.Query("password")
-	user := models.User{Username: username, Password: password}
+	user_login := ctx.Query("user_login")
+	user_pass := ctx.Query("user_pass")
+	user := models.User{UserLogin: user_login, UserPass: user_pass}
 	user.ID = uint(uid)
 	result := models.UpdateUser(&user)
 	ctx.JSON(http.StatusOK, result)

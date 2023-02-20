@@ -17,7 +17,6 @@ import (
 // @BasePath    /v1
 
 func main() {
-
 	r := gin.Default()
 
 	docs.SwaggerInfo.BasePath = "/v1"

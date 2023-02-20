@@ -3,8 +3,8 @@ package utils
 import "golang.org/x/crypto/bcrypt"
 
 // 密码加密
-func HashedPassword(password string) (string, error) {
-	b, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+func HashedUserPass(user_pass string) (string, error) {
+	b, err := bcrypt.GenerateFromPassword([]byte(user_pass), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
 	}
@@ -12,7 +12,7 @@ func HashedPassword(password string) (string, error) {
 }
 
 // 密码比较
-func EqualsPassword(password string, hashedPassword string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+func EqualsUserPass(user_pass string, hashedUserPass string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedUserPass), []byte(user_pass))
 	return err == nil
 }

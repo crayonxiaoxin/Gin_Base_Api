@@ -46,21 +46,10 @@ func mySQL() *gorm.DB {
 		db_pass := cf.MustValue(section, "db_pass")
 		db_host := cf.MustValue(section, "db_host")
 		db_name := cf.MustValue(section, "db_name")
-		fmt.Printf("db_user: %v\n", db_user)
-		fmt.Printf("db_pass: %v\n", db_pass)
-		fmt.Printf("db_host: %v\n", db_host)
-		fmt.Printf("db_name: %v\n", db_name)
-
-		// 配置数据库
-		// db_user := "root"
-		// db_pass := "New4you!"
-		// db_host := "127.0.0.1:3306"
-		// db_name := "beego_api_demo"
-
-		// db_user := "dev"
-		// db_pass := "cXxxKGTiHBGhHEiA"
-		// db_host := "127.0.0.1:3306"
-		// db_name := "dev"
+		// fmt.Printf("db_user: %v\n", db_user)
+		// fmt.Printf("db_pass: %v\n", db_pass)
+		// fmt.Printf("db_host: %v\n", db_host)
+		// fmt.Printf("db_name: %v\n", db_name)
 
 		if db_user == "" || db_pass == "" || db_name == "" {
 			panic("please check db info")

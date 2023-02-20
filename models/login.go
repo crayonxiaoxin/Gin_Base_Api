@@ -10,9 +10,9 @@ type LoginRes struct {
 
 func Login(u *User) utils.Result {
 	var result = utils.Result{}
-	user := GetUserByLogin(u.Username)
+	user := GetUserByLogin(u.UserLogin)
 	if user.Valid() {
-		b := utils.EqualsPassword(u.Password, user.Password)
+		b := utils.EqualsUserPass(u.UserPass, user.UserPass)
 		if b {
 			data := make(map[string]interface{})
 			data["data"] = user
