@@ -9,6 +9,7 @@ func init() {
 	utils.DB.AutoMigrate(&User{})
 }
 
+// 用户
 type User struct {
 	utils.BaseModel
 	UserLogin string `json:"user_login"`
@@ -84,7 +85,7 @@ func UpdateUser(u *User) utils.Result {
 					u.UserPass = encryptUserPass
 				}
 			}
-			utils.DB.Updates(u) // 更新用户
+			utils.DB.Updates(&u) // 更新用户
 			result.ResultCode = utils.SUCCESS
 			result.Data = GetUser(int(u.ID)) // 返回最新的用户信息
 		} else {

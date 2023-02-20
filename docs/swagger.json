@@ -1,9 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Gin API 基础工程",
-        "title": "Test API",
-        "contact": {},
+        "description": "基于 golang 构建的 API 项目",
+        "title": "API Demo",
+        "contact": {
+            "name": "Code Resources",
+            "url": "https://github.com/crayonxiaoxin/Gin_Base_Api"
+        },
         "version": "v1"
     },
     "basePath": "/v1",
@@ -12,21 +15,21 @@
             "post": {
                 "description": "登入",
                 "tags": [
-                    "登入"
+                    "登入 \u0026 注册"
                 ],
                 "summary": "登入",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query",
                         "required": true
                     }
@@ -49,19 +52,17 @@
         },
         "/media": {
             "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "获取所有媒体",
                 "tags": [
                     "媒体相关"
                 ],
                 "summary": "获取所有媒体",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "页码",
@@ -87,19 +88,17 @@
         },
         "/media/{id}": {
             "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "通过id获取文件",
                 "tags": [
                     "媒体相关"
                 ],
                 "summary": "通过id获取文件",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "The key for staticblock",
@@ -118,19 +117,17 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "删除文件",
                 "tags": [
                     "媒体相关"
                 ],
                 "summary": "删除文件",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "文件ID",
@@ -153,21 +150,21 @@
             "post": {
                 "description": "注册",
                 "tags": [
-                    "注册"
+                    "登入 \u0026 注册"
                 ],
                 "summary": "注册",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query",
                         "required": true
                     }
@@ -190,19 +187,17 @@
         },
         "/upload": {
             "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "上传",
                 "tags": [
                     "媒体相关"
                 ],
                 "summary": "上传",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "file",
                         "description": "文件",
@@ -223,19 +218,17 @@
         },
         "/user": {
             "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "获取所有用户",
                 "tags": [
                     "用户相关"
                 ],
                 "summary": "获取所有用户",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "页码",
@@ -259,6 +252,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "添加用户",
                 "tags": [
                     "用户相关"
@@ -267,22 +265,15 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query",
                         "required": true
                     }
@@ -299,19 +290,17 @@
         },
         "/user/{id}": {
             "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "通过id获取用户",
                 "tags": [
                     "用户相关"
                 ],
                 "summary": "通过id获取用户",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "The key for staticblock",
@@ -330,19 +319,17 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "更新用户",
                 "tags": [
                     "用户相关"
                 ],
                 "summary": "更新用户",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "The uid you want to update",
@@ -353,14 +340,14 @@
                     {
                         "type": "string",
                         "description": "用户名",
-                        "name": "username",
+                        "name": "user_login",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "密码",
-                        "name": "password",
+                        "name": "user_pass",
                         "in": "query"
                     }
                 ],
@@ -374,6 +361,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
                 "description": "删除用户",
                 "tags": [
                     "用户相关"
@@ -381,18 +373,90 @@
                 "summary": "删除用户",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "登入后返回的token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "type": "integer",
                         "description": "The uid you want to delete",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}/meta": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "通过uid获取元数据",
+                "tags": [
+                    "用户相关"
+                ],
+                "summary": "通过uid获取元数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Key，如果填写，只返回对应值",
+                        "name": "meta_key",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "更新用户元数据",
+                "tags": [
+                    "用户相关"
+                ],
+                "summary": "更新用户元数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The uid you want to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "meta_key",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Value",
+                        "name": "meta_value",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -418,6 +482,13 @@
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "JwtAuth": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "header"
         }
     }
 }

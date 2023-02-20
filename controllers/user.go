@@ -10,15 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Title       GetAll
-// @Summary     获取所有用户
-// @Description 获取所有用户
-// @Param       token header string true  "登入后返回的token"
-// @Param       page  query  int    false "页码"
-// @Param       size  query  int    false "每页数量"
-// @Tags        用户相关
-// @Success     200 {object} utils.Result
-// @router      /user [get]
+//	@Title			GetAll
+//	@Summary		获取所有用户
+//	@Description	获取所有用户
+//	@Param			page	query	int	false	"页码"
+//	@Param			size	query	int	false	"每页数量"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user [get]
 func GetAllUsers(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
@@ -32,14 +32,14 @@ func GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-// @Title       Get
-// @Summary     通过id获取用户
-// @Description 通过id获取用户
-// @Param       token header string true "登入后返回的token"
-// @Param       id    path   int    true "The key for staticblock"
-// @Tags        用户相关
-// @Success     200 {object} utils.Result
-// @router      /user/{id} [get]
+//	@Title			Get
+//	@Summary		通过id获取用户
+//	@Description	通过id获取用户
+//	@Param			id	path	int	true	"The key for staticblock"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user/{id} [get]
 func GetUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	uid, err := strconv.ParseInt(id, 0, 0)
@@ -58,15 +58,15 @@ func GetUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-// @Title       CreateUser
-// @Summary     添加用户
-// @Description 添加用户
-// @Param       token    header string true "登入后返回的token"
-// @Param       user_login query  string true "用户名"
-// @Param       user_pass query  string true "密码"
-// @Tags        用户相关
-// @Success     200 {object} utils.Result
-// @router      /user [post]
+//	@Title			CreateUser
+//	@Summary		添加用户
+//	@Description	添加用户
+//	@Param			user_login	query	string	true	"用户名"
+//	@Param			user_pass	query	string	true	"密码"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user [post]
 func AddUser(ctx *gin.Context) {
 	user_login := ctx.Query("user_login")
 	user_pass := ctx.Query("user_pass")
@@ -74,16 +74,16 @@ func AddUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-// @Title       Update
-// @Summary     更新用户
-// @Description 更新用户
-// @Param       token    header string true  "登入后返回的token"
-// @Param       id       path   int    true  "The uid you want to update"
-// @Param       user_login query  string true  "用户名"
-// @Param       user_pass query  string false "密码"
-// @Tags        用户相关
-// @Success     200 {object} utils.Result
-// @router      /user/{id} [put]
+//	@Title			Update
+//	@Summary		更新用户
+//	@Description	更新用户
+//	@Param			id			path	int		true	"The uid you want to update"
+//	@Param			user_login	query	string	true	"用户名"
+//	@Param			user_pass	query	string	false	"密码"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user/{id} [put]
 func UpdateUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	uid, err := strconv.ParseInt(id, 0, 0)
@@ -98,14 +98,14 @@ func UpdateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-// @Title       Delete
-// @Summary     删除用户
-// @Description 删除用户
-// @Param       token header string true "登入后返回的token"
-// @Param       id    path   int    true "The uid you want to delete"
-// @Tags        用户相关
-// @Success     200 {object} utils.Result
-// @router      /user/{id} [delete]
+//	@Title			Delete
+//	@Summary		删除用户
+//	@Description	删除用户
+//	@Param			id	path	int	true	"The uid you want to delete"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user/{id} [delete]
 func DeleteUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	fmt.Printf("id: %v\n", id)
@@ -114,5 +114,58 @@ func DeleteUser(ctx *gin.Context) {
 		uid = 0
 	}
 	result := models.DeleteUser(int(uid))
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			Get UserMetas
+//	@Summary		通过uid获取元数据
+//	@Description	通过uid获取元数据
+//	@Param			id			path	int		true	"用户id"
+//	@Param			meta_key	query	string	false	"Key，如果填写，只返回对应值"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user/{id}/meta [get]
+func GetUserMetas(ctx *gin.Context) {
+	id := ctx.Param("id")
+	meta_key := ctx.Query("meta_key")
+	uid, err := strconv.ParseInt(id, 0, 0)
+	var result = utils.Result{}
+	if err == nil && uid != 0 {
+		if len(meta_key) > 0 { // 如果有 meta_key，则获取单个值
+			m := make(map[string]string)
+			m[meta_key] = models.GetUserMetaValue(&models.UserMeta{Uid: uint(uid), MetaKey: meta_key})
+			result.Data = m
+		} else { // 否则，获取所有相关值
+			m := models.GetUserMetas(uid)
+			result.Data = m
+		}
+		result.ResultCode = utils.SUCCESS
+	} else {
+		result.ResultCode = utils.ERR_PARAMS
+	}
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			Update UserMeta
+//	@Summary		更新用户元数据
+//	@Description	更新用户元数据
+//	@Param			id			path	int		true	"The uid you want to update"
+//	@Param			meta_key	query	string	true	"Key"
+//	@Param			meta_value	query	string	false	"Value"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user/{id}/meta [post]
+func UpdateUserMeta(ctx *gin.Context) {
+	id := ctx.Param("id")
+	uid, err := strconv.ParseInt(id, 0, 0)
+	if err != nil {
+		uid = 0
+	}
+	meta_key := ctx.Query("meta_key")
+	meta_value := ctx.Query("meta_value")
+	meta := models.UserMeta{Uid: uint(uid), MetaKey: meta_key, MetaValue: meta_value}
+	result := models.UpdateUserMeta(&meta)
 	ctx.JSON(http.StatusOK, result)
 }

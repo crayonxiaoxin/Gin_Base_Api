@@ -11,10 +11,15 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @Version     v1
-// @Title       Test API
-// @Description Gin API 基础工程
-// @BasePath    /v1
+//	@Version					v1
+//	@Title						API Demo
+//	@Description				基于 golang 构建的 API 项目
+//	@BasePath					/v1
+//	@contact.name				Code Resources
+//	@contact.url				https://github.com/crayonxiaoxin/Gin_Base_Api
+//	@securityDefinitions.apikey	JwtAuth
+//	@in							header
+//	@name						token
 
 func main() {
 	r := gin.Default()
@@ -39,11 +44,15 @@ func main() {
 				user.POST("/:id", controllers.AddUser)
 				user.PUT("/:id", controllers.UpdateUser)
 				user.DELETE("/:id", controllers.DeleteUser)
+
+				// 元数据
+				user.GET("/:id/meta", controllers.GetUserMetas)
+				user.POST("/:id/meta", controllers.UpdateUserMeta)
 			}
 
 			// 文件上传
 			v1.POST("/upload", controllers.UploadFile)
-
+			// 媒体
 			media := v1.Group("/media")
 			{
 				media.GET("/", controllers.GetAllFiles)

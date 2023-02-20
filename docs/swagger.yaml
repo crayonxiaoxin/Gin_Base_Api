@@ -9,9 +9,11 @@ definitions:
         type: integer
     type: object
 info:
-  contact: {}
-  description: Gin API 基础工程
-  title: Test API
+  contact:
+    name: Code Resources
+    url: https://github.com/crayonxiaoxin/Gin_Base_Api
+  description: 基于 golang 构建的 API 项目
+  title: API Demo
   version: v1
 paths:
   /login:
@@ -20,12 +22,12 @@ paths:
       parameters:
       - description: 用户名
         in: query
-        name: username
+        name: user_login
         required: true
         type: string
       - description: 密码
         in: query
-        name: password
+        name: user_pass
         required: true
         type: string
       responses:
@@ -39,16 +41,11 @@ paths:
             type: user
       summary: 登入
       tags:
-      - 登入
+      - 登入 & 注册
   /media:
     get:
       description: 获取所有媒体
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 页码
         in: query
         name: page
@@ -62,6 +59,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 获取所有媒体
       tags:
       - 媒体相关
@@ -69,11 +68,6 @@ paths:
     delete:
       description: 删除文件
       parameters:
-      - description: token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 文件ID
         in: path
         name: id
@@ -84,17 +78,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 删除文件
       tags:
       - 媒体相关
     get:
       description: 通过id获取文件
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: The key for staticblock
         in: path
         name: id
@@ -105,6 +96,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 通过id获取文件
       tags:
       - 媒体相关
@@ -114,12 +107,12 @@ paths:
       parameters:
       - description: 用户名
         in: query
-        name: username
+        name: user_login
         required: true
         type: string
       - description: 密码
         in: query
-        name: password
+        name: user_pass
         required: true
         type: string
       responses:
@@ -133,16 +126,11 @@ paths:
             type: user
       summary: 注册
       tags:
-      - 注册
+      - 登入 & 注册
   /upload:
     post:
       description: 上传
       parameters:
-      - description: token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 文件
         in: formData
         name: file
@@ -153,6 +141,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 上传
       tags:
       - 媒体相关
@@ -160,11 +150,6 @@ paths:
     get:
       description: 获取所有用户
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 页码
         in: query
         name: page
@@ -178,25 +163,22 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 获取所有用户
       tags:
       - 用户相关
     post:
       description: 添加用户
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 用户名
         in: query
-        name: username
+        name: user_login
         required: true
         type: string
       - description: 密码
         in: query
-        name: password
+        name: user_pass
         required: true
         type: string
       responses:
@@ -204,6 +186,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 添加用户
       tags:
       - 用户相关
@@ -211,11 +195,6 @@ paths:
     delete:
       description: 删除用户
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: The uid you want to delete
         in: path
         name: id
@@ -226,17 +205,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 删除用户
       tags:
       - 用户相关
     get:
       description: 通过id获取用户
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: The key for staticblock
         in: path
         name: id
@@ -247,17 +223,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 通过id获取用户
       tags:
       - 用户相关
     put:
       description: 更新用户
       parameters:
-      - description: 登入后返回的token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: The uid you want to update
         in: path
         name: id
@@ -265,19 +238,76 @@ paths:
         type: integer
       - description: 用户名
         in: query
-        name: username
+        name: user_login
         required: true
         type: string
       - description: 密码
         in: query
-        name: password
+        name: user_pass
         type: string
       responses:
         "200":
           description: OK
           schema:
             $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
       summary: 更新用户
       tags:
       - 用户相关
+  /user/{id}/meta:
+    get:
+      description: 通过uid获取元数据
+      parameters:
+      - description: 用户id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Key，如果填写，只返回对应值
+        in: query
+        name: meta_key
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 通过uid获取元数据
+      tags:
+      - 用户相关
+    post:
+      description: 更新用户元数据
+      parameters:
+      - description: The uid you want to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Key
+        in: query
+        name: meta_key
+        required: true
+        type: string
+      - description: Value
+        in: query
+        name: meta_value
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 更新用户元数据
+      tags:
+      - 用户相关
+securityDefinitions:
+  JwtAuth:
+    in: header
+    name: token
+    type: apiKey
 swagger: "2.0"

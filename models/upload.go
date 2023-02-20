@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// 媒体
 type Media struct {
 	utils.BaseModel
 	Name       string `json:"name"`
