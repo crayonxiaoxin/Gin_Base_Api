@@ -24,7 +24,9 @@ func UploadFile(ctx *gin.Context) {
 	if err != nil {
 		result.ResultCode = utils.ERR_PARAMS
 	} else {
-		result = models.UploadMedia(fh)
+		tokenString := ctx.GetHeader("token")
+		uid := utils.GetUidFromToken(tokenString)
+		result = models.UploadMedia(fh, uid)
 	}
 	ctx.JSON(http.StatusOK, result)
 }

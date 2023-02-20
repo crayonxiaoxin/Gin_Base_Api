@@ -69,3 +69,19 @@ func parse(tokenString string) (*jwt.Token, error) {
 		return signKey, nil
 	})
 }
+
+// 从 token 负载中获取 uid
+func GetUidFromToken(tokenString string) int64 {
+	payloads := TokenPayloads(tokenString)
+	uidPayload := payloads["uid"]
+	intUid, ok := uidPayload.(int64)
+	if ok {
+		return intUid
+	} else {
+		floatUid, ok := uidPayload.(float64)
+		if ok {
+			return int64(floatUid)
+		}
+	}
+	return 0
+}

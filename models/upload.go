@@ -19,6 +19,7 @@ type Media struct {
 	Ext        string `json:"ext"`
 	Size       int64  `json:"size"`
 	OriginName string `json:"origin"`
+	Uid        int64  `json:"uid"`
 }
 
 func init() {
@@ -64,7 +65,7 @@ func DeleteMedia(id int) utils.Result {
 			utils.RemoveFile(m.Path)
 			result.ResultCode = utils.SUCCESS
 		} else {
-			result.ResultCode = utils.ERR_USER_NOT_EXISTS
+			result.ResultCode = utils.ERR_UPLOAD_FILE_NOT_EXISTS
 		}
 	} else {
 		result.ResultCode = utils.ERR_PARAMS
@@ -73,7 +74,7 @@ func DeleteMedia(id int) utils.Result {
 }
 
 // 上传媒体文件
-func UploadMedia(fh *multipart.FileHeader) utils.Result {
+func UploadMedia(fh *multipart.FileHeader, uid int64) utils.Result {
 	result := utils.Result{}
 	// 文件名
 	filename := filepath.Base(fh.Filename)
@@ -109,6 +110,7 @@ func UploadMedia(fh *multipart.FileHeader) utils.Result {
 			Ext:        ext,
 			Size:       size,
 			OriginName: filename,
+			Uid:        uid,
 		}
 		AddMedia(&data)
 		result.ResultCode = utils.SUCCESS

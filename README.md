@@ -8,35 +8,52 @@ git clone https://github.com/crayonxiaoxin/Gin_Base_Api.git
 
 ### 准备
 
+配置数据库 conf.ini（值不需要引号）
+```
+; 开发环境
+[dev]
+db_user = 
+db_pass = 
+db_host = 
+db_name = 
+```
+
 安装命令行工具 swag，用于生成 swagger 文档 ([参考资料](https://github.com/swaggo/gin-swagger))
 ```
 go get -u github.com/swaggo/swag/cmd/swag
 ``` 
 
 
+### 获取依赖
+```
+go mod tidy
+```
 
 ### 运行
 ```
-go mod tidy
-
-go run main.go
+dev=1 go run .
 ```
 
 
-### 生成文档
+### 生成&更新文档
 ```
 swag init
 ```
 
-文档地址：/swagger/index.html
+文档地址：/swagger/index.html 或 /docs
+
+
+### 生产环境 build
+```
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build . 
+```
 
 
 ### 目录结构
 ```
 .
 ├── README.md
-├── conf
-│   └── app.conf                // 配置文件
+├── conf.ini                    // 配置文件
 ├── controllers                 // 控制器
 │   ├── login.go
 │   ├── register.go

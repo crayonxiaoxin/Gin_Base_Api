@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"hello_gin_api/utils"
 )
 
@@ -52,8 +51,6 @@ func AddUser(u *User) utils.Result {
 		if !getu.Valid() { // 用户名不存在
 			encryptPassword, _ := utils.HashedPassword(u.Password) // 密码加密
 			u.Password = encryptPassword
-			fmt.Println(u)
-			fmt.Println(&u)
 			utils.DB.Create(&u) // 添加
 			result.ResultCode = utils.SUCCESS
 			result.Data = *u

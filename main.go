@@ -4,6 +4,7 @@ import (
 	"hello_gin_api/controllers"
 	"hello_gin_api/docs"
 	"hello_gin_api/middlewares"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -16,6 +17,7 @@ import (
 // @BasePath    /v1
 
 func main() {
+
 	r := gin.Default()
 
 	docs.SwaggerInfo.BasePath = "/v1"
@@ -54,6 +56,10 @@ func main() {
 
 	// swagger 文档
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	// 重定向至文档
+	r.GET("/docs", func(ctx *gin.Context) {
+		ctx.Redirect(http.StatusTemporaryRedirect, "/swagger/index.html")
+	})
 
 	// 404
 	r.NoRoute(controllers.Error404)
