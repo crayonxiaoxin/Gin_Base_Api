@@ -74,7 +74,7 @@ func GetAllFiles(ctx *gin.Context) {
 //	@Title			Get
 //	@Summary		通过id获取文件
 //	@Description	通过id获取文件
-//	@Param			id	path	int	true	"The key for staticblock"
+//	@Param			id	path	int	true	"文件id"
 //	@Tags			媒体相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result

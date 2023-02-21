@@ -43,4 +43,8 @@ var (
 	// upload
 	ERR_UPLOAD_MKDIR           = ResultCode{1201, "Couldn't create uploads dir"}
 	ERR_UPLOAD_FILE_NOT_EXISTS = ResultCode{1102, "File not exists"}
+
+	// post
+	ERR_POST_EMPTY_TITLE = ResultCode{1301, "Post title can not be empty"}
+	ERR_POST_NOT_EXISTS  = ResultCode{1302, "Post not exists"}
 )

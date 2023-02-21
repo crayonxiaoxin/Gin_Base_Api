@@ -12,8 +12,8 @@ func init() {
 // 用户
 type User struct {
 	utils.BaseModel
-	UserLogin string `json:"user_login"`
-	UserPass  string `json:"user_pass"`
+	UserLogin string `json:"user_login" gorm:"unique;not null"`
+	UserPass  string `json:"user_pass" gorm:"not null"`
 }
 
 // 判断用户是否有效
@@ -22,7 +22,7 @@ func (u *User) Valid() bool {
 }
 
 // 获取所有用户
-func GetAllUsers(page int, pageSize int) (users []User, count int64) {
+func GetUsers(page int, pageSize int) (users []User, count int64) {
 	if page <= 0 {
 		page = 1
 	}

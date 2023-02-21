@@ -5,8 +5,8 @@ import "hello_gin_api/utils"
 // 用户 - 元数据
 type UserMeta struct {
 	utils.BaseModel
-	Uid       uint   `json:"uid"`
-	MetaKey   string `json:"meta_key"`
+	Uid       uint   `json:"uid" gorm:"not null;default:0"`
+	MetaKey   string `json:"meta_key" gorm:"not null"`
 	MetaValue string `json:"meta_value"`
 }
 

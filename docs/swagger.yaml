@@ -101,6 +101,140 @@ paths:
       summary: 通过id获取文件
       tags:
       - 媒体相关
+  /posts:
+    get:
+      description: 获取所有文章
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: size
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 获取所有文章
+      tags:
+      - 文章相关
+    post:
+      description: 添加文章
+      parameters:
+      - description: 标题
+        in: query
+        name: post_title
+        required: true
+        type: string
+      - description: 内容
+        in: query
+        name: post_content
+        required: true
+        type: string
+      - description: 状态：publish/draft
+        in: query
+        name: post_status
+        type: string
+      - description: 类型
+        in: query
+        name: post_type
+        type: string
+      - description: 父文章
+        in: query
+        name: post_parent
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 添加文章
+      tags:
+      - 文章相关
+  /posts/{id}:
+    delete:
+      description: 删除文章
+      parameters:
+      - description: 文章id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 删除文章
+      tags:
+      - 文章相关
+    get:
+      description: 通过id获取文章
+      parameters:
+      - description: 文章id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 通过id获取文章
+      tags:
+      - 文章相关
+    put:
+      description: 更新文章
+      parameters:
+      - description: 文章id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 标题
+        in: query
+        name: post_title
+        required: true
+        type: string
+      - description: 内容
+        in: query
+        name: post_content
+        required: true
+        type: string
+      - description: 状态：publish/draft
+        in: query
+        name: post_status
+        type: string
+      - description: 类型
+        in: query
+        name: post_type
+        type: string
+      - description: 父文章
+        in: query
+        name: post_parent
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 更新文章
+      tags:
+      - 文章相关
   /register:
     post:
       description: 注册
@@ -213,7 +347,7 @@ paths:
     get:
       description: 通过id获取用户
       parameters:
-      - description: The key for staticblock
+      - description: 用户id
         in: path
         name: id
         required: true

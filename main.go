@@ -22,6 +22,7 @@ import (
 //	@name						token
 
 func main() {
+
 	r := gin.Default()
 
 	docs.SwaggerInfo.BasePath = "/v1"
@@ -39,9 +40,9 @@ func main() {
 		{
 			user := v1.Group("/user")
 			{
-				user.GET("/", controllers.GetAllUsers)
+				user.GET("/", controllers.GetUsers)
 				user.GET("/:id", controllers.GetUser)
-				user.POST("/:id", controllers.AddUser)
+				user.POST("/", controllers.AddUser)
 				user.PUT("/:id", controllers.UpdateUser)
 				user.DELETE("/:id", controllers.DeleteUser)
 
@@ -58,6 +59,16 @@ func main() {
 				media.GET("/", controllers.GetAllFiles)
 				media.GET("/:id", controllers.GetFile)
 				media.DELETE("/:id", controllers.RemoveFile)
+			}
+
+			// 文章
+			posts := v1.Group("/posts")
+			{
+				posts.GET("/", controllers.GetPosts)
+				posts.GET("/:id", controllers.GetPost)
+				posts.POST("/", controllers.AddPost)
+				posts.PUT("/:id", controllers.UpdatePost)
+				posts.DELETE("/:id", controllers.DeletePost)
 			}
 		}
 	}

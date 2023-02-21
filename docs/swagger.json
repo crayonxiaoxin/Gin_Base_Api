@@ -146,6 +146,217 @@
                 }
             }
         },
+        "/posts": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "获取所有文章",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "获取所有文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "添加文章",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "添加文章",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "post_title",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "内容",
+                        "name": "post_content",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "状态：publish/draft",
+                        "name": "post_status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "类型",
+                        "name": "post_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "父文章",
+                        "name": "post_parent",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/posts/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "通过id获取文章",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "通过id获取文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "更新文章",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "更新文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "post_title",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "内容",
+                        "name": "post_content",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "状态：publish/draft",
+                        "name": "post_status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "类型",
+                        "name": "post_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "父文章",
+                        "name": "post_parent",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "删除文章",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "删除文章",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "description": "注册",
@@ -303,7 +514,7 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "The key for staticblock",
+                        "description": "用户id",
                         "name": "id",
                         "in": "path",
                         "required": true

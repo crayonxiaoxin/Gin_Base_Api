@@ -14,13 +14,13 @@ import (
 // 媒体
 type Media struct {
 	utils.BaseModel
-	Name       string `json:"name"`
-	Path       string `json:"path"`
-	Mime       string `json:"mime"`
+	Name       string `json:"name" gorm:"not null"`
+	Path       string `json:"path" gorm:"not null"`
+	Mime       string `json:"mime" gorm:"not null"`
 	Ext        string `json:"ext"`
-	Size       int64  `json:"size"`
+	Size       int64  `json:"size" gorm:"not null"`
 	OriginName string `json:"origin"`
-	Uid        int64  `json:"uid"`
+	Uid        uint   `json:"uid" gorm:"not null;default:0"`
 }
 
 func init() {
@@ -111,7 +111,7 @@ func UploadMedia(fh *multipart.FileHeader, uid int64) utils.Result {
 			Ext:        ext,
 			Size:       size,
 			OriginName: filename,
-			Uid:        uid,
+			Uid:        uint(uid),
 		}
 		AddMedia(&data)
 		result.ResultCode = utils.SUCCESS

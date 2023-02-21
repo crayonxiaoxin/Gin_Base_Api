@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//	@Title			GetAll
+//	@Title			GetUsers
 //	@Summary		获取所有用户
 //	@Description	获取所有用户
 //	@Param			page	query	int	false	"页码"
@@ -19,12 +19,12 @@ import (
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
 //	@router			/user [get]
-func GetAllUsers(ctx *gin.Context) {
+func GetUsers(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
 	pageInt := utils.Str2Int(page)
 	sizeInt := utils.Str2Int(size)
-	users, count := models.GetAllUsers(int(pageInt), int(sizeInt))
+	users, count := models.GetUsers(int(pageInt), int(sizeInt))
 	data := make(map[string]interface{})
 	data["list"] = users
 	data["count"] = count
@@ -32,10 +32,10 @@ func GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-//	@Title			Get
+//	@Title			GetUser
 //	@Summary		通过id获取用户
 //	@Description	通过id获取用户
-//	@Param			id	path	int	true	"The key for staticblock"
+//	@Param			id	path	int	true	"用户id"
 //	@Tags			用户相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -74,10 +74,10 @@ func AddUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-//	@Title			Update
+//	@Title			UpdateUser
 //	@Summary		更新用户
 //	@Description	更新用户
-//	@Param			id			path	int		true	"The uid you want to update"
+//	@Param			id			path	int		true	"用户id"
 //	@Param			user_login	query	string	true	"用户名"
 //	@Param			user_pass	query	string	false	"密码"
 //	@Tags			用户相关
@@ -98,10 +98,10 @@ func UpdateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-//	@Title			Delete
+//	@Title			DeleteUser
 //	@Summary		删除用户
 //	@Description	删除用户
-//	@Param			id	path	int	true	"The uid you want to delete"
+//	@Param			id	path	int	true	"用户id"
 //	@Tags			用户相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -150,7 +150,7 @@ func GetUserMetas(ctx *gin.Context) {
 //	@Title			Update UserMeta
 //	@Summary		更新用户元数据
 //	@Description	更新用户元数据
-//	@Param			id			path	int		true	"The uid you want to update"
+//	@Param			id			path	int		true	"用户id"
 //	@Param			meta_key	query	string	true	"Key"
 //	@Param			meta_value	query	string	false	"Value"
 //	@Tags			用户相关
