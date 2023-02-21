@@ -86,7 +86,7 @@ paths:
     get:
       description: 通过id获取文件
       parameters:
-      - description: The key for staticblock
+      - description: 文件id
         in: path
         name: id
         required: true
@@ -235,6 +235,79 @@ paths:
       summary: 更新文章
       tags:
       - 文章相关
+  /posts/{id}/meta:
+    delete:
+      description: 删除文章元数据
+      parameters:
+      - description: 文章id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Key
+        in: query
+        name: meta_key
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 删除文章元数据
+      tags:
+      - 文章相关
+    get:
+      description: 通过 post_id 获取元数据
+      parameters:
+      - description: post id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Key，如果填写，只返回对应值
+        in: query
+        name: meta_key
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 通过 post_id 获取元数据
+      tags:
+      - 文章相关
+    post:
+      description: 更新文章元数据
+      parameters:
+      - description: post id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Key
+        in: query
+        name: meta_key
+        required: true
+        type: string
+      - description: Value
+        in: query
+        name: meta_value
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 更新文章元数据
+      tags:
+      - 文章相关
   /register:
     post:
       description: 注册
@@ -329,7 +402,7 @@ paths:
     delete:
       description: 删除用户
       parameters:
-      - description: The uid you want to delete
+      - description: 用户id
         in: path
         name: id
         required: true
@@ -365,7 +438,7 @@ paths:
     put:
       description: 更新用户
       parameters:
-      - description: The uid you want to update
+      - description: 用户id
         in: path
         name: id
         required: true
@@ -390,6 +463,29 @@ paths:
       tags:
       - 用户相关
   /user/{id}/meta:
+    delete:
+      description: 删除用户元数据
+      parameters:
+      - description: 用户id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Key
+        in: query
+        name: meta_key
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 删除用户元数据
+      tags:
+      - 用户相关
     get:
       description: 通过uid获取元数据
       parameters:
@@ -415,7 +511,7 @@ paths:
     post:
       description: 更新用户元数据
       parameters:
-      - description: The uid you want to update
+      - description: 用户id
         in: path
         name: id
         required: true

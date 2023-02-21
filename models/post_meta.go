@@ -2,27 +2,27 @@ package models
 
 import "hello_gin_api/utils"
 
-// 用户 - 元数据
-type UserMeta struct {
+// 文章 - 元数据
+type PostMeta struct {
 	utils.BaseModel
-	Uid       uint   `json:"uid" gorm:"not null;default:0"`
+	PostId    uint   `json:"post_id" gorm:"not null;default:0"`
 	MetaKey   string `json:"meta_key" gorm:"not null"`
 	MetaValue string `json:"meta_value"`
 }
 
 func init() {
-	utils.DB.AutoMigrate(&UserMeta{})
+	utils.DB.AutoMigrate(&PostMeta{})
 }
 
-func (meta *UserMeta) Valid() bool {
+func (meta *PostMeta) Valid() bool {
 	return meta.ID > 0
 }
 
 // 获取用户的所有元数据
-func GetUserMetas(uid interface{}) map[string]string {
-	metaList := []UserMeta{}
+func GetPostMetas(post_id interface{}) map[string]string {
+	metaList := []PostMeta{}
 	strList := make(map[string]string)
-	utils.DB.Model(&UserMeta{}).Where("uid = ?", uid).Find(&metaList)
+	utils.DB.Model(&PostMeta{}).Where("post_id = ?", post_id).Find(&metaList)
 	for _, um := range metaList {
 		strList[um.MetaKey] = um.MetaValue
 	}
@@ -30,13 +30,13 @@ func GetUserMetas(uid interface{}) map[string]string {
 }
 
 // 获取整个结果
-func GetUserMeta(usermeta *UserMeta) utils.Result {
+func GetPostMeta(postmeta *PostMeta) utils.Result {
 	result := utils.Result{}
-	if usermeta.Uid <= 0 || len(usermeta.MetaKey) < 1 {
+	if postmeta.PostId <= 0 || len(postmeta.MetaKey) < 1 {
 		result.ResultCode = utils.ERR_PARAMS
 	}
-	meta := &UserMeta{}
-	utils.DB.Find(&meta, "uid = ? and meta_key = ?", usermeta.Uid, usermeta.MetaKey)
+	meta := &PostMeta{}
+	utils.DB.Find(&meta, "post_id = ? and meta_key = ?", postmeta.PostId, postmeta.MetaKey)
 	if meta.Valid() {
 		result.ResultCode = utils.SUCCESS
 		result.Data = *meta
@@ -47,13 +47,13 @@ func GetUserMeta(usermeta *UserMeta) utils.Result {
 }
 
 // 获取整个结果 id
-func GetUserMetaByID(meta_id uint) utils.Result {
+func GetPostMetaByID(meta_id uint) utils.Result {
 	result := utils.Result{}
 	if meta_id <= 0 {
 		result.ResultCode = utils.ERR_PARAMS
 	}
-	meta := &UserMeta{}
-	utils.DB.Find(&meta, "id = ? ", meta_id)
+	meta := &PostMeta{}
+	utils.DB.Find(&meta, "id = ?", meta_id)
 	if meta.Valid() {
 		result.ResultCode = utils.SUCCESS
 		result.Data = *meta
@@ -64,27 +64,27 @@ func GetUserMetaByID(meta_id uint) utils.Result {
 }
 
 // 新增或更新
-func UpdateUserMeta(usermeta *UserMeta) utils.Result {
+func UpdatePostMeta(postmeta *PostMeta) utils.Result {
 	result := utils.Result{}
-	r := GetUserMeta(usermeta)
+	r := GetPostMeta(postmeta)
 	if r.Success() { // 存在记录，则更新
-		um, ok := r.Data.(UserMeta)
+		um, ok := r.Data.(PostMeta)
 		if ok {
-			usermeta.ID = um.ID
+			postmeta.ID = um.ID
 		}
-		utils.DB.Updates(&usermeta)
+		utils.DB.Updates(&postmeta)
 	} else { // 否则，新增
-		utils.DB.Create(&usermeta)
+		utils.DB.Create(&postmeta)
 	}
 	result.ResultCode = utils.SUCCESS
 	return result
 }
 
 // 获取字符串
-func GetUserMetaValue(usermeta *UserMeta) string {
-	r := GetUserMeta(usermeta)
+func GetPostMetaValue(postmeta *PostMeta) string {
+	r := GetPostMeta(postmeta)
 	if r.Success() {
-		meta, ok := r.Data.(UserMeta)
+		meta, ok := r.Data.(PostMeta)
 		if ok {
 			if len(meta.MetaValue) > 0 {
 				return meta.MetaValue
@@ -95,16 +95,16 @@ func GetUserMetaValue(usermeta *UserMeta) string {
 }
 
 // 删除
-func DeleteUserMeta(uid uint, meta_key string) utils.Result {
+func DeletePostMeta(post_id uint, meta_key string) utils.Result {
 	var result = utils.Result{}
-	if uid > 0 {
-		meta := GetUserMeta(&UserMeta{Uid: uid, MetaKey: meta_key})
+	if post_id > 0 {
+		meta := GetPostMeta(&PostMeta{PostId: post_id, MetaKey: meta_key})
 		if meta.Success() {
-			um := meta.Data.(UserMeta)
-			utils.DB.Delete(&um)
+			pm := meta.Data.(PostMeta)
+			utils.DB.Delete(&pm)
 			result.ResultCode = utils.SUCCESS
 		} else {
-			result.ResultCode = utils.ERR_USER_META_NOT_EXISTS
+			result.ResultCode = utils.ERR_POST_META_NOT_EXISTS
 		}
 	} else {
 		result.ResultCode = utils.ERR_PARAMS

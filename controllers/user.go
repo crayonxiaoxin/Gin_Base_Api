@@ -148,8 +148,8 @@ func GetUserMetas(ctx *gin.Context) {
 }
 
 //	@Title			Update UserMeta
-//	@Summary		更新用户元数据
-//	@Description	更新用户元数据
+//	@Summary		新增或更新用户元数据
+//	@Description	新增或更新用户元数据
 //	@Param			id			path	int		true	"用户id"
 //	@Param			meta_key	query	string	true	"Key"
 //	@Param			meta_value	query	string	false	"Value"
@@ -167,5 +167,25 @@ func UpdateUserMeta(ctx *gin.Context) {
 	meta_value := ctx.Query("meta_value")
 	meta := models.UserMeta{Uid: uint(uid), MetaKey: meta_key, MetaValue: meta_value}
 	result := models.UpdateUserMeta(&meta)
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			DeleteUserMeta
+//	@Summary		删除用户元数据
+//	@Description	删除用户元数据
+//	@Param			id			path	int		true	"用户id"
+//	@Param			meta_key	query	string	true	"Key"
+//	@Tags			用户相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/user/{id}/meta [delete]
+func DeleteUserMeta(ctx *gin.Context) {
+	id := ctx.Param("id")
+	meta_key := ctx.Query("meta_key")
+	uid, err := strconv.ParseInt(id, 0, 0)
+	if err != nil {
+		uid = 0
+	}
+	result := models.DeleteUserMeta(uint(uid), meta_key)
 	ctx.JSON(http.StatusOK, result)
 }

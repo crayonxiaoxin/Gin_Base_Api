@@ -41,10 +41,10 @@ func GetPosts(ctx *gin.Context) {
 //	@router			/posts/{id} [get]
 func GetPost(ctx *gin.Context) {
 	id := ctx.Param("id")
-	pid, err := strconv.ParseInt(id, 0, 0)
+	post_id, err := strconv.ParseInt(id, 0, 0)
 	var result = utils.Result{}
-	if err == nil && pid != 0 {
-		post := models.GetPost(int(pid))
+	if err == nil && post_id != 0 {
+		post := models.GetPost(int(post_id))
 		if post.Valid() {
 			result.ResultCode = utils.SUCCESS
 			result.Data = post
@@ -103,9 +103,9 @@ func AddPost(ctx *gin.Context) {
 //	@router			/posts/{id} [put]
 func UpdatePost(ctx *gin.Context) {
 	id := ctx.Param("id")
-	pid, err := strconv.ParseInt(id, 0, 0)
+	post_id, err := strconv.ParseInt(id, 0, 0)
 	if err != nil {
-		pid = 0
+		post_id = 0
 	}
 	post_title := ctx.Query("post_title")
 	post_content := ctx.Query("post_content")
@@ -119,7 +119,7 @@ func UpdatePost(ctx *gin.Context) {
 		PostType:    post_type,
 		PostParent:  uint(utils.Str2Int(post_parent)),
 	}
-	post.ID = uint(pid)
+	post.ID = uint(post_id)
 	result := models.UpdatePost(&post)
 	ctx.JSON(http.StatusOK, result)
 }
@@ -134,10 +134,83 @@ func UpdatePost(ctx *gin.Context) {
 //	@router			/posts/{id} [delete]
 func DeletePost(ctx *gin.Context) {
 	id := ctx.Param("id")
-	uid, err := strconv.ParseInt(id, 0, 0)
+	post_id, err := strconv.ParseInt(id, 0, 0)
 	if err != nil {
-		uid = 0
+		post_id = 0
 	}
-	result := models.DeletePost(int(uid))
+	result := models.DeletePost(int(post_id))
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			Get PostMetas
+//	@Summary		通过 post_id 获取元数据
+//	@Description	通过 post_id 获取元数据
+//	@Param			id			path	int		true	"post id"
+//	@Param			meta_key	query	string	false	"Key，如果填写，只返回对应值"
+//	@Tags			文章相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/posts/{id}/meta [get]
+func GetPostMetas(ctx *gin.Context) {
+	id := ctx.Param("id")
+	meta_key := ctx.Query("meta_key")
+	post_id, err := strconv.ParseInt(id, 0, 0)
+	var result = utils.Result{}
+	if err == nil && post_id != 0 {
+		if len(meta_key) > 0 { // 如果有 meta_key，则获取单个值
+			m := make(map[string]string)
+			m[meta_key] = models.GetPostMetaValue(&models.PostMeta{PostId: uint(post_id), MetaKey: meta_key})
+			result.Data = m
+		} else { // 否则，获取所有相关值
+			m := models.GetPostMetas(post_id)
+			result.Data = m
+		}
+		result.ResultCode = utils.SUCCESS
+	} else {
+		result.ResultCode = utils.ERR_PARAMS
+	}
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			Update PostMeta
+//	@Summary		新增或更新文章元数据
+//	@Description	新增或更新文章元数据
+//	@Param			id			path	int		true	"post id"
+//	@Param			meta_key	query	string	true	"Key"
+//	@Param			meta_value	query	string	false	"Value"
+//	@Tags			文章相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/posts/{id}/meta [post]
+func UpdatePostMeta(ctx *gin.Context) {
+	id := ctx.Param("id")
+	post_id, err := strconv.ParseInt(id, 0, 0)
+	if err != nil {
+		post_id = 0
+	}
+	meta_key := ctx.Query("meta_key")
+	meta_value := ctx.Query("meta_value")
+	meta := models.PostMeta{PostId: uint(post_id), MetaKey: meta_key, MetaValue: meta_value}
+	result := models.UpdatePostMeta(&meta)
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			DeletePostMeta
+//	@Summary		删除文章元数据
+//	@Description	删除文章元数据
+//	@Param			id			path	int		true	"文章id"
+//	@Param			meta_key	query	string	true	"Key"
+//	@Tags			文章相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/posts/{id}/meta [delete]
+func DeletePostMeta(ctx *gin.Context) {
+	id := ctx.Param("id")
+	meta_key := ctx.Query("meta_key")
+	post_id, err := strconv.ParseInt(id, 0, 0)
+	if err != nil {
+		post_id = 0
+	}
+	result := models.DeletePostMeta(uint(post_id), meta_key)
 	ctx.JSON(http.StatusOK, result)
 }

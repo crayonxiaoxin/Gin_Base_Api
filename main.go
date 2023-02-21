@@ -49,6 +49,7 @@ func main() {
 				// 元数据
 				user.GET("/:id/meta", controllers.GetUserMetas)
 				user.POST("/:id/meta", controllers.UpdateUserMeta)
+				user.DELETE("/:id/meta", controllers.DeleteUserMeta)
 			}
 
 			// 文件上传
@@ -69,6 +70,11 @@ func main() {
 				posts.POST("/", controllers.AddPost)
 				posts.PUT("/:id", controllers.UpdatePost)
 				posts.DELETE("/:id", controllers.DeletePost)
+
+				// 元数据
+				posts.GET("/:id/meta", controllers.GetPostMetas)
+				posts.POST("/:id/meta", controllers.UpdatePostMeta)
+				posts.DELETE("/:id/meta", controllers.DeletePostMeta)
 			}
 		}
 	}

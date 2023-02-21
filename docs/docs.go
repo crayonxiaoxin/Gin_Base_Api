@@ -108,7 +108,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "The key for staticblock",
+                        "description": "文件id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -364,6 +364,121 @@ const docTemplate = `{
                 }
             }
         },
+        "/posts/{id}/meta": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "通过 post_id 获取元数据",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "通过 post_id 获取元数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "post id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Key，如果填写，只返回对应值",
+                        "name": "meta_key",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "更新文章元数据",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "更新文章元数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "post id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "meta_key",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Value",
+                        "name": "meta_value",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "删除文章元数据",
+                "tags": [
+                    "文章相关"
+                ],
+                "summary": "删除文章元数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "meta_key",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "description": "注册",
@@ -550,7 +665,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "The uid you want to update",
+                        "description": "用户id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -592,7 +707,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "The uid you want to delete",
+                        "description": "用户id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -658,7 +773,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "The uid you want to update",
+                        "description": "用户id",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -675,6 +790,42 @@ const docTemplate = `{
                         "description": "Value",
                         "name": "meta_value",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "删除用户元数据",
+                "tags": [
+                    "用户相关"
+                ],
+                "summary": "删除用户元数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Key",
+                        "name": "meta_key",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
