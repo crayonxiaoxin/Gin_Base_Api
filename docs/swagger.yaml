@@ -16,6 +16,87 @@ info:
   title: API Demo
   version: v1
 paths:
+  /cap:
+    get:
+      description: 获取能力（权限）
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: size
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 获取能力（权限）
+      tags:
+      - 角色与权限相关
+    post:
+      description: 添加能力（权限）
+      parameters:
+      - description: 值
+        in: query
+        name: cap_value
+        required: true
+        type: string
+      - description: 角色名称
+        in: query
+        name: cap_name
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 添加能力（权限）
+      tags:
+      - 角色与权限相关
+  /cap/{id}:
+    delete:
+      description: 删除能力（权限）
+      parameters:
+      - description: 能力id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 删除能力（权限）
+      tags:
+      - 角色与权限相关
+    get:
+      description: 通过id获取能力（权限）
+      parameters:
+      - description: 能力id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 通过id获取能力（权限）
+      tags:
+      - 角色与权限相关
   /login:
     post:
       description: 登入
@@ -282,7 +363,7 @@ paths:
       tags:
       - 文章相关
     post:
-      description: 更新文章元数据
+      description: 新增或更新文章元数据
       parameters:
       - description: post id
         in: path
@@ -305,7 +386,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       security:
       - JwtAuth: []
-      summary: 更新文章元数据
+      summary: 新增或更新文章元数据
       tags:
       - 文章相关
   /register:
@@ -334,6 +415,87 @@ paths:
       summary: 注册
       tags:
       - 登入 & 注册
+  /role:
+    get:
+      description: 获取角色
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: size
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 获取角色
+      tags:
+      - 角色与权限相关
+    post:
+      description: 添加角色
+      parameters:
+      - description: 值
+        in: query
+        name: role_value
+        required: true
+        type: string
+      - description: 角色名称
+        in: query
+        name: role_name
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 添加角色
+      tags:
+      - 角色与权限相关
+  /role/{id}:
+    delete:
+      description: 删除角色
+      parameters:
+      - description: 角色id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 删除角色
+      tags:
+      - 角色与权限相关
+    get:
+      description: 通过id获取角色
+      parameters:
+      - description: 角色id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Result'
+      security:
+      - JwtAuth: []
+      summary: 通过id获取角色
+      tags:
+      - 角色与权限相关
   /upload:
     post:
       description: 上传
@@ -509,7 +671,7 @@ paths:
       tags:
       - 用户相关
     post:
-      description: 更新用户元数据
+      description: 新增或更新用户元数据
       parameters:
       - description: 用户id
         in: path
@@ -532,7 +694,7 @@ paths:
             $ref: '#/definitions/utils.Result'
       security:
       - JwtAuth: []
-      summary: 更新用户元数据
+      summary: 新增或更新用户元数据
       tags:
       - 用户相关
 securityDefinitions:

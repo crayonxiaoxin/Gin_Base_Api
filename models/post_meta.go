@@ -72,11 +72,20 @@ func UpdatePostMeta(postmeta *PostMeta) utils.Result {
 		if ok {
 			postmeta.ID = um.ID
 		}
-		utils.DB.Updates(&postmeta)
+		err := utils.DB.Updates(&postmeta).Error
+		if err != nil {
+			result.ResultCode = utils.ERR_POST_META_DELETE
+		} else {
+			result.ResultCode = utils.SUCCESS
+		}
 	} else { // 否则，新增
-		utils.DB.Create(&postmeta)
+		err := utils.DB.Create(&postmeta).Error
+		if err != nil {
+			result.ResultCode = utils.ERR_POST_META_ADD
+		} else {
+			result.ResultCode = utils.SUCCESS
+		}
 	}
-	result.ResultCode = utils.SUCCESS
 	return result
 }
 
@@ -101,8 +110,12 @@ func DeletePostMeta(post_id uint, meta_key string) utils.Result {
 		meta := GetPostMeta(&PostMeta{PostId: post_id, MetaKey: meta_key})
 		if meta.Success() {
 			pm := meta.Data.(PostMeta)
-			utils.DB.Delete(&pm)
-			result.ResultCode = utils.SUCCESS
+			err := utils.DB.Delete(&pm).Error
+			if err != nil {
+				result.ResultCode = utils.ERR_POST_META_DELETE
+			} else {
+				result.ResultCode = utils.SUCCESS
+			}
 		} else {
 			result.ResultCode = utils.ERR_POST_META_NOT_EXISTS
 		}

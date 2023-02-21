@@ -51,20 +51,20 @@ func GetMedia(id int) (m *Media) {
 	return
 }
 
-// 添加媒体文件
-func AddMedia(m *Media) {
-	utils.DB.Create(&m)
-}
-
 // 删除
 func DeleteMedia(id int) utils.Result {
 	var result = utils.Result{}
 	if id > 0 {
 		m := GetMedia(id)
 		if m.Valid() {
-			utils.DB.Delete(&m)
-			utils.RemoveFile(m.Path)
-			result.ResultCode = utils.SUCCESS
+			err := utils.DB.Delete(&m).Error
+			if err != nil {
+				result.ResultCode = utils.ERR_UPLOAD_FILE_DELETE
+			} else {
+				utils.RemoveFile(m.Path)
+				result.ResultCode = utils.SUCCESS
+			}
+
 		} else {
 			result.ResultCode = utils.ERR_UPLOAD_FILE_NOT_EXISTS
 		}
@@ -113,9 +113,13 @@ func UploadMedia(fh *multipart.FileHeader, uid int64) utils.Result {
 			OriginName: filename,
 			Uid:        uint(uid),
 		}
-		AddMedia(&data)
-		result.ResultCode = utils.SUCCESS
-		result.Data = data
+		err := utils.DB.Create(&data).Error
+		if err != nil {
+			result.ResultCode = utils.ERR_UPLOAD_FILE_ADD
+		} else {
+			result.ResultCode = utils.SUCCESS
+			result.Data = data
+		}
 	}
 	return result
 }

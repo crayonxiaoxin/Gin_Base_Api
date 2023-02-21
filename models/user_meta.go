@@ -72,11 +72,20 @@ func UpdateUserMeta(usermeta *UserMeta) utils.Result {
 		if ok {
 			usermeta.ID = um.ID
 		}
-		utils.DB.Updates(&usermeta)
+		err := utils.DB.Updates(&usermeta).Error
+		if err != nil {
+			result.ResultCode = utils.ERR_USER_META_UPDATE
+		} else {
+			result.ResultCode = utils.SUCCESS
+		}
 	} else { // 否则，新增
-		utils.DB.Create(&usermeta)
+		err := utils.DB.Create(&usermeta).Error
+		if err != nil {
+			result.ResultCode = utils.ERR_USER_META_ADD
+		} else {
+			result.ResultCode = utils.SUCCESS
+		}
 	}
-	result.ResultCode = utils.SUCCESS
 	return result
 }
 
@@ -101,8 +110,12 @@ func DeleteUserMeta(uid uint, meta_key string) utils.Result {
 		meta := GetUserMeta(&UserMeta{Uid: uid, MetaKey: meta_key})
 		if meta.Success() {
 			um := meta.Data.(UserMeta)
-			utils.DB.Delete(&um)
-			result.ResultCode = utils.SUCCESS
+			err := utils.DB.Delete(&um).Error
+			if err != nil {
+				result.ResultCode = utils.ERR_USER_META_DELETE
+			} else {
+				result.ResultCode = utils.SUCCESS
+			}
 		} else {
 			result.ResultCode = utils.ERR_USER_META_NOT_EXISTS
 		}

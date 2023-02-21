@@ -18,6 +18,137 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/cap": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "获取能力（权限）",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "获取能力（权限）",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "添加能力（权限）",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "添加能力（权限）",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "值",
+                        "name": "cap_value",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色名称",
+                        "name": "cap_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/cap/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "通过id获取能力（权限）",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "通过id获取能力（权限）",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "能力id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "删除能力（权限）",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "删除能力（权限）",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "能力id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "登入",
@@ -406,11 +537,11 @@ const docTemplate = `{
                         "JwtAuth": []
                     }
                 ],
-                "description": "更新文章元数据",
+                "description": "新增或更新文章元数据",
                 "tags": [
                     "文章相关"
                 ],
-                "summary": "更新文章元数据",
+                "summary": "新增或更新文章元数据",
                 "parameters": [
                     {
                         "type": "integer",
@@ -513,6 +644,137 @@ const docTemplate = `{
                         "description": "Forbidden",
                         "schema": {
                             "type": "user"
+                        }
+                    }
+                }
+            }
+        },
+        "/role": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "获取角色",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "获取角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "添加角色",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "添加角色",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "值",
+                        "name": "role_value",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色名称",
+                        "name": "role_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
+        "/role/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "通过id获取角色",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "通过id获取角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "删除角色",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "删除角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
                         }
                     }
                 }
@@ -765,11 +1027,11 @@ const docTemplate = `{
                         "JwtAuth": []
                     }
                 ],
-                "description": "更新用户元数据",
+                "description": "新增或更新用户元数据",
                 "tags": [
                     "用户相关"
                 ],
-                "summary": "更新用户元数据",
+                "summary": "新增或更新用户元数据",
                 "parameters": [
                     {
                         "type": "integer",

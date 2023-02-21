@@ -60,9 +60,13 @@ func AddPost(post *Post) utils.Result {
 		if len(post.PostType) == 0 {
 			post.PostType = "posts"
 		}
-		utils.DB.Create(&post)
-		result.ResultCode = utils.SUCCESS
-		result.Data = *post
+		err := utils.DB.Create(&post).Error
+		if err != nil {
+			result.ResultCode = utils.ERR_POST_ADD
+		} else {
+			result.ResultCode = utils.SUCCESS
+			result.Data = *post
+		}
 	}
 	return result
 }
@@ -91,9 +95,13 @@ func UpdatePost(post *Post) utils.Result {
 				if len(post.PostType) == 0 {
 					post.PostType = getpost.PostType
 				}
-				utils.DB.Updates(&post)
-				result.ResultCode = utils.SUCCESS
-				result.Data = *post
+				err := utils.DB.Updates(&post).Error
+				if err != nil {
+					result.ResultCode = utils.ERR_POST_UPDATE
+				} else {
+					result.ResultCode = utils.SUCCESS
+					result.Data = *post
+				}
 			} else {
 				result.ResultCode = utils.ERR_POST_NOT_EXISTS
 			}
@@ -109,8 +117,12 @@ func DeletePost(id int) utils.Result {
 	if id > 0 {
 		post := GetPost(id)
 		if post.Valid() {
-			utils.DB.Delete(&post)
-			result.ResultCode = utils.SUCCESS
+			err := utils.DB.Delete(&post).Error
+			if err != nil {
+				result.ResultCode = utils.ERR_POST_DELETE
+			} else {
+				result.ResultCode = utils.SUCCESS
+			}
 		} else {
 			result.ResultCode = utils.ERR_POST_NOT_EXISTS
 		}

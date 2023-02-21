@@ -52,9 +52,14 @@ func AddUser(u *User) utils.Result {
 		if !getu.Valid() { // 用户名不存在
 			encryptUserPass, _ := utils.HashedUserPass(u.UserPass) // 密码加密
 			u.UserPass = encryptUserPass
-			utils.DB.Create(&u) // 添加
-			result.ResultCode = utils.SUCCESS
-			result.Data = *u
+			err := utils.DB.Create(&u).Error // 添加
+			if err != nil {
+				result.ResultCode = utils.ERR_USER_ADD
+			} else {
+				result.ResultCode = utils.SUCCESS
+				result.Data = *u
+			}
+
 		} else {
 			result.ResultCode = utils.ERR_USER_EXISTS
 		}
@@ -85,9 +90,13 @@ func UpdateUser(u *User) utils.Result {
 					u.UserPass = encryptUserPass
 				}
 			}
-			utils.DB.Updates(&u) // 更新用户
-			result.ResultCode = utils.SUCCESS
-			result.Data = GetUser(int(u.ID)) // 返回最新的用户信息
+			err := utils.DB.Updates(&u).Error // 更新用户
+			if err != nil {
+				result.ResultCode = utils.ERR_USER_UPDATE
+			} else {
+				result.ResultCode = utils.SUCCESS
+				result.Data = GetUser(int(u.ID)) // 返回最新的用户信息
+			}
 		} else {
 			result.ResultCode = utils.ERR_USER_NOT_EXISTS
 		}
@@ -115,8 +124,12 @@ func DeleteUser(uid int) utils.Result {
 	if uid > 0 {
 		u := GetUser(uid)
 		if u.Valid() {
-			utils.DB.Delete(&u)
-			result.ResultCode = utils.SUCCESS
+			err := utils.DB.Delete(&u).Error
+			if err != nil {
+				result.ResultCode = utils.ERR_USER_DELETE
+			} else {
+				result.ResultCode = utils.SUCCESS
+			}
 		} else {
 			result.ResultCode = utils.ERR_USER_NOT_EXISTS
 		}

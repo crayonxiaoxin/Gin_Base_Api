@@ -76,6 +76,25 @@ func main() {
 				posts.POST("/:id/meta", controllers.UpdatePostMeta)
 				posts.DELETE("/:id/meta", controllers.DeletePostMeta)
 			}
+
+			// 角色
+			role := v1.Group("/role")
+			{
+				role.GET("/", controllers.GetRoles)
+				role.GET("/:id", controllers.GetRole)
+				role.POST("/", controllers.AddRole)
+				role.DELETE("/:id", controllers.DeleteRole)
+			}
+
+			// 能力（权限）
+			cap := v1.Group("/cap")
+			{
+				cap.GET("/", controllers.GetCapabilities)
+				cap.GET("/:id", controllers.GetCapability)
+				cap.POST("/", controllers.AddCapability)
+				cap.DELETE("/:id", controllers.DeleteCapability)
+			}
+
 		}
 	}
 
