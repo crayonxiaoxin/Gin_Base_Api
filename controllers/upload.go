@@ -4,7 +4,6 @@ import (
 	"hello_gin_api/models"
 	"hello_gin_api/utils"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,11 +40,8 @@ func UploadFile(ctx *gin.Context) {
 //	@router			/media/{id} [delete]
 func RemoveFile(ctx *gin.Context) {
 	id := ctx.Param("id")
-	mid, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		mid = 0
-	}
-	result := models.DeleteMedia(int(mid))
+	post_id := utils.Str2Int(id, 0)
+	result := models.DeleteMedia(int(post_id))
 	ctx.JSON(http.StatusOK, result)
 }
 
@@ -81,10 +77,10 @@ func GetAllFiles(ctx *gin.Context) {
 //	@router			/media/{id} [get]
 func GetFile(ctx *gin.Context) {
 	id := ctx.Param("id")
-	mid, err := strconv.ParseInt(id, 0, 0)
+	post_id := utils.Str2Int(id, 0)
 	var result = utils.Result{}
-	if err == nil && mid != 0 {
-		user := models.GetMedia(int(mid))
+	if post_id > 0 {
+		user := models.GetMedia(int(post_id))
 		if user.Valid() {
 			result.ResultCode = utils.SUCCESS
 			result.Data = user

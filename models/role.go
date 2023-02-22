@@ -48,7 +48,7 @@ func GetRoles(page int, pageSize int) (roles []Role, count int64) {
 
 // 通过 id 获取 role
 func GetRole(id int) (role *Role) {
-	utils.DB.First(&role, id)
+	utils.DB.Preload("Capabilities").First(&role, id)
 	return
 }
 
@@ -154,7 +154,7 @@ func AddCapability(cap *Capability) utils.Result {
 	return result
 }
 
-// 删除角色
+// 删除能力
 func DeleteCapability(id int) utils.Result {
 	var result = utils.Result{}
 	if id > 0 {
@@ -169,4 +169,82 @@ func DeleteCapability(id int) utils.Result {
 		result.ResultCode = utils.ERR_PARAMS
 	}
 	return result
+}
+
+// 为角色添加能力
+// 支持傳入 uint、string、struct
+func AddCapability2Role(cap interface{}, role interface{}) utils.Result {
+	result := utils.Result{}
+	cap_obj := get_cap_obj(cap)
+	role_obj := get_role_obj(role)
+	if cap_obj.Valid() && role_obj.Valid() {
+		err := utils.DB.Model(&role_obj).Association("Capabilities").Append(&cap_obj)
+		if err != nil {
+			result.ResultCode = utils.ERR_ROLE_CAP_GRANT_FAILED
+		} else {
+			result.ResultCode = utils.SUCCESS
+		}
+	} else {
+		result.ResultCode = utils.ERR_PARAMS
+	}
+	return result
+}
+
+// 为角色刪除某項能力
+// 支持傳入 uint、string、struct
+func DeleteCapabilityFromRole(cap interface{}, role interface{}) utils.Result {
+	result := utils.Result{}
+	cap_obj := get_cap_obj(cap)
+	role_obj := get_role_obj(role)
+	if cap_obj.Valid() && role_obj.Valid() {
+		err := utils.DB.Model(&role_obj).Association("Capabilities").Delete(&cap_obj)
+		if err != nil {
+			result.ResultCode = utils.ERR_ROLE_CAP_REMOVE_FAILED
+		} else {
+			result.ResultCode = utils.SUCCESS
+		}
+	} else {
+		result.ResultCode = utils.ERR_PARAMS
+	}
+	return result
+}
+
+// 通过传入的参数类型获取能力
+func get_cap_obj(cap interface{}) Capability {
+	var cap_obj Capability
+	cap_id_tmp, ok := cap.(uint) // 支持 uint
+	if ok {
+		cap_obj = *GetCapability(int(cap_id_tmp))
+	} else {
+		cap_val_tmp, ok := cap.(string) // 支持 string
+		if ok && len(cap_val_tmp) > 0 {
+			cap_obj = *GetCapabilityByValue(cap_val_tmp)
+		} else {
+			cap_obj_tmp, ok := cap.(Capability) // 支持 struct
+			if ok {
+				cap_obj = *GetCapability(int(cap_obj_tmp.ID))
+			}
+		}
+	}
+	return cap_obj
+}
+
+// 通过传入的参数类型获取角色
+func get_role_obj(role interface{}) Role {
+	var role_obj Role
+	role_id_tmp, ok := role.(uint) // 支持 uint
+	if ok {
+		role_obj = *GetRole(int(role_id_tmp))
+	} else {
+		role_val_tmp, ok := role.(string) // 支持 string
+		if ok && len(role_val_tmp) > 0 {
+			role_obj = *GetRoleByValue(role_val_tmp)
+		} else {
+			role_obj_tmp, ok := role.(Role) // 支持 struct
+			if ok {
+				role_obj = *GetRole(int(role_obj_tmp.ID))
+			}
+		}
+	}
+	return role_obj
 }

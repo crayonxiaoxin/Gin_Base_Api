@@ -67,12 +67,16 @@ var (
 	ERR_POST_META_DELETE     = ResultCode{1314, "刪除文章元數據失敗"}
 
 	// role
-	ERR_ROLE_NOT_EXISTS = ResultCode{1401, "角色不存在"}
-	ERR_ROLE_EXISTS     = ResultCode{1402, "角色已存在"}
-	ERR_ROLE_REGEX      = ResultCode{1403, "角色的值必須為數字、字母或下劃線"}
-	ERR_ROLE_ADD        = ResultCode{1404, "添加角色失敗"}
-	ERR_ROLE_UPDATE     = ResultCode{1405, "更新角色失敗"}
-	ERR_ROLE_DELETE     = ResultCode{1406, "刪除角色失敗"}
+	ERR_ROLE_NOT_EXISTS        = ResultCode{1401, "角色不存在"}
+	ERR_ROLE_EXISTS            = ResultCode{1402, "角色已存在"}
+	ERR_ROLE_REGEX             = ResultCode{1403, "角色的值必須為數字、字母或下劃線"}
+	ERR_ROLE_ADD               = ResultCode{1404, "添加角色失敗"}
+	ERR_ROLE_UPDATE            = ResultCode{1405, "更新角色失敗"}
+	ERR_ROLE_DELETE            = ResultCode{1406, "刪除角色失敗"}
+	ERR_ROLE_CAP_EXIST         = ResultCode{1411, "已擁有該權限"}
+	ERR_ROLE_CAP_NOT_EXIST     = ResultCode{1412, "未擁有該權限"}
+	ERR_ROLE_CAP_GRANT_FAILED  = ResultCode{1413, "賦予權限失敗"}
+	ERR_ROLE_CAP_REMOVE_FAILED = ResultCode{1414, "撤銷權限失敗"}
 
 	// cap
 	ERR_CAP_NOT_EXISTS = ResultCode{1501, "權限不存在"}

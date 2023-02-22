@@ -780,6 +780,80 @@ const docTemplate = `{
                 }
             }
         },
+        "/role/{id}/cap": {
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "添加能力（权限）到角色",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "添加能力（权限）到角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色id / role_value",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "能力id / cap_value",
+                        "name": "cap_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "description": "从角色移除能力（权限）",
+                "tags": [
+                    "角色与权限相关"
+                ],
+                "summary": "从角色移除能力（权限）",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "能力id",
+                        "name": "cap_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Result"
+                        }
+                    }
+                }
+            }
+        },
         "/upload": {
             "post": {
                 "security": [

@@ -4,7 +4,6 @@ import (
 	"hello_gin_api/models"
 	"hello_gin_api/utils"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,9 +40,9 @@ func GetRoles(ctx *gin.Context) {
 //	@router			/role/{id} [get]
 func GetRole(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
+	post_id := utils.Str2Int(id, 0)
 	var result = utils.Result{}
-	if err == nil && post_id != 0 {
+	if post_id > 0 {
 		post := models.GetRole(int(post_id))
 		if post.Valid() {
 			result.ResultCode = utils.SUCCESS
@@ -86,10 +85,7 @@ func AddRole(ctx *gin.Context) {
 //	@router			/role/{id} [delete]
 func DeleteRole(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		post_id = 0
-	}
+	post_id := utils.Str2Int(id, 0)
 	result := models.DeleteRole(int(post_id))
 	ctx.JSON(http.StatusOK, result)
 }
@@ -126,9 +122,9 @@ func GetCapabilities(ctx *gin.Context) {
 //	@router			/cap/{id} [get]
 func GetCapability(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
+	post_id := utils.Str2Int(id, 0)
 	var result = utils.Result{}
-	if err == nil && post_id != 0 {
+	if post_id > 0 {
 		post := models.GetCapability(int(post_id))
 		if post.Valid() {
 			result.ResultCode = utils.SUCCESS
@@ -171,10 +167,39 @@ func AddCapability(ctx *gin.Context) {
 //	@router			/cap/{id} [delete]
 func DeleteCapability(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		post_id = 0
-	}
+	post_id := utils.Str2Int(id, 0)
 	result := models.DeleteCapability(int(post_id))
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			AddCapability2Role
+//	@Summary		添加能力（权限）到角色
+//	@Description	添加能力（权限）到角色
+//	@Param			id		path	int	true	"角色id / role_value"
+//	@Param			cap_id	query	int	true	"能力id / cap_value"
+//	@Tags			角色与权限相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/role/{id}/cap [post]
+func AddCapability2Role(ctx *gin.Context) {
+	role_id := utils.Str2Int(ctx.Param("id"), 0)
+	cap_id := utils.Str2Int(ctx.Query("cap_id"), 0)
+	result := models.AddCapability2Role(uint(cap_id), uint(role_id))
+	ctx.JSON(http.StatusOK, result)
+}
+
+//	@Title			DeleteCapability2Role
+//	@Summary		从角色移除能力（权限）
+//	@Description	从角色移除能力（权限）
+//	@Param			id		path	int	true	"角色id"
+//	@Param			cap_id	query	int	true	"能力id"
+//	@Tags			角色与权限相关
+//	@security		JwtAuth
+//	@Success		200	{object}	utils.Result
+//	@router			/role/{id}/cap [delete]
+func DeleteCapability2Role(ctx *gin.Context) {
+	role_id := utils.Str2Int(ctx.Param("id"), 0)
+	cap_id := utils.Str2Int(ctx.Query("cap_id"), 0)
+	result := models.DeleteCapabilityFromRole(uint(cap_id), uint(role_id))
 	ctx.JSON(http.StatusOK, result)
 }

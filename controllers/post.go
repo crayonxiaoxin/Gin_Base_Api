@@ -4,7 +4,6 @@ import (
 	"hello_gin_api/models"
 	"hello_gin_api/utils"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,9 +40,9 @@ func GetPosts(ctx *gin.Context) {
 //	@router			/posts/{id} [get]
 func GetPost(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
+	post_id := utils.Str2Int(id)
 	var result = utils.Result{}
-	if err == nil && post_id != 0 {
+	if post_id > 0 {
 		post := models.GetPost(int(post_id))
 		if post.Valid() {
 			result.ResultCode = utils.SUCCESS
@@ -103,10 +102,7 @@ func AddPost(ctx *gin.Context) {
 //	@router			/posts/{id} [put]
 func UpdatePost(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		post_id = 0
-	}
+	post_id := utils.Str2Int(id, 0)
 	post_title := ctx.Query("post_title")
 	post_content := ctx.Query("post_content")
 	post_status := ctx.Query("post_status")
@@ -134,10 +130,7 @@ func UpdatePost(ctx *gin.Context) {
 //	@router			/posts/{id} [delete]
 func DeletePost(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		post_id = 0
-	}
+	post_id := utils.Str2Int(id, 0)
 	result := models.DeletePost(int(post_id))
 	ctx.JSON(http.StatusOK, result)
 }
@@ -154,9 +147,9 @@ func DeletePost(ctx *gin.Context) {
 func GetPostMetas(ctx *gin.Context) {
 	id := ctx.Param("id")
 	meta_key := ctx.Query("meta_key")
-	post_id, err := strconv.ParseInt(id, 0, 0)
+	post_id := utils.Str2Int(id, 0)
 	var result = utils.Result{}
-	if err == nil && post_id != 0 {
+	if post_id > 0 {
 		if len(meta_key) > 0 { // 如果有 meta_key，则获取单个值
 			m := make(map[string]string)
 			m[meta_key] = models.GetPostMetaValue(&models.PostMeta{PostId: uint(post_id), MetaKey: meta_key})
@@ -184,10 +177,7 @@ func GetPostMetas(ctx *gin.Context) {
 //	@router			/posts/{id}/meta [post]
 func UpdatePostMeta(ctx *gin.Context) {
 	id := ctx.Param("id")
-	post_id, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		post_id = 0
-	}
+	post_id := utils.Str2Int(id, 0)
 	meta_key := ctx.Query("meta_key")
 	meta_value := ctx.Query("meta_value")
 	meta := models.PostMeta{PostId: uint(post_id), MetaKey: meta_key, MetaValue: meta_value}
@@ -207,10 +197,7 @@ func UpdatePostMeta(ctx *gin.Context) {
 func DeletePostMeta(ctx *gin.Context) {
 	id := ctx.Param("id")
 	meta_key := ctx.Query("meta_key")
-	post_id, err := strconv.ParseInt(id, 0, 0)
-	if err != nil {
-		post_id = 0
-	}
+	post_id := utils.Str2Int(id, 0)
 	result := models.DeletePostMeta(uint(post_id), meta_key)
 	ctx.JSON(http.StatusOK, result)
 }

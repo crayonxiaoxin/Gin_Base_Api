@@ -84,6 +84,8 @@ func main() {
 				role.GET("/:id", controllers.GetRole)
 				role.POST("/", controllers.AddRole)
 				role.DELETE("/:id", controllers.DeleteRole)
+				role.POST("/:id/cap", controllers.AddCapability2Role)
+				role.DELETE("/:id/cap", controllers.DeleteCapability2Role)
 			}
 
 			// 能力（权限）
