@@ -10,6 +10,9 @@ git clone https://github.com/crayonxiaoxin/Gin_Base_Api.git
 
 配置数据库 conf.ini（值不需要引号）
 ```
+; 监听端口
+port = 8083
+
 ; 开发环境
 [dev]
 db_user = 
@@ -48,6 +51,9 @@ swag init
 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build . 
 ```
 
+### 部署
+> 将 可执行文件 以及 conf.ini 上传到服务器
+> 通过 Apache 或 Nginx 反代即可配置 domain
 
 ### 目录结构
 ```

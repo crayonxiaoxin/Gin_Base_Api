@@ -4,8 +4,11 @@ import (
 	"hello_gin_api/controllers"
 	"hello_gin_api/docs"
 	"hello_gin_api/middlewares"
+	"hello_gin_api/utils"
 	"net/http"
+	"strconv"
 
+	"github.com/Unknwon/goconfig"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -22,6 +25,13 @@ import (
 //	@name						token
 
 func main() {
+
+	// 默认端口
+	var port = 8083
+	cf, err := goconfig.LoadConfigFile("./conf.ini")
+	if err == nil { // 从 conf.ini 读取端口，如果不合法，则继续使用默认端口
+		port = utils.Str2Int(cf.MustValue("", "port"), port)
+	}
 
 	r := gin.Default()
 
@@ -114,5 +124,6 @@ func main() {
 	// 设置静态文件路径
 	r.Static("/uploads", "uploads")
 
-	r.Run(":8083")
+	// 监听端口
+	r.Run(":" + strconv.Itoa(port))
 }
