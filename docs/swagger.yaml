@@ -655,12 +655,15 @@ paths:
       - description: 用户名
         in: query
         name: user_login
-        required: true
         type: string
       - description: 密码
         in: query
         name: user_pass
         type: string
+      - description: 角色id
+        in: query
+        name: role_id
+        type: integer
       responses:
         "200":
           description: OK

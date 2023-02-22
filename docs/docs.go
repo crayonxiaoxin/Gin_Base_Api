@@ -1010,13 +1010,18 @@ const docTemplate = `{
                         "type": "string",
                         "description": "用户名",
                         "name": "user_login",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "密码",
                         "name": "user_pass",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色id",
+                        "name": "role_id",
                         "in": "query"
                     }
                 ],

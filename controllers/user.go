@@ -44,7 +44,7 @@ func GetUser(ctx *gin.Context) {
 	uid := utils.Str2Int(id, 0)
 	var result = utils.Result{}
 	if uid > 0 {
-		user := models.GetUser(int(uid))
+		user := models.GetUser(uint(uid))
 		if user.Valid() {
 			result.ResultCode = utils.SUCCESS
 			result.Data = user
@@ -77,8 +77,9 @@ func AddUser(ctx *gin.Context) {
 //	@Summary		更新用户
 //	@Description	更新用户
 //	@Param			id			path	int		true	"用户id"
-//	@Param			user_login	query	string	true	"用户名"
+//	@Param			user_login	query	string	false	"用户名"
 //	@Param			user_pass	query	string	false	"密码"
+//	@Param			role_id		query	int		false	"角色id"
 //	@Tags			用户相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -88,7 +89,8 @@ func UpdateUser(ctx *gin.Context) {
 	uid := utils.Str2Int(id, 0)
 	user_login := ctx.Query("user_login")
 	user_pass := ctx.Query("user_pass")
-	user := models.User{UserLogin: user_login, UserPass: user_pass}
+	role_id := utils.Str2Int(ctx.Query("role_id"))
+	user := models.User{UserLogin: user_login, UserPass: user_pass, RoleId: uint(role_id)}
 	user.ID = uint(uid)
 	result := models.UpdateUser(&user)
 	ctx.JSON(http.StatusOK, result)
@@ -106,7 +108,7 @@ func DeleteUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	fmt.Printf("id: %v\n", id)
 	uid := utils.Str2Int(id, 0)
-	result := models.DeleteUser(int(uid))
+	result := models.DeleteUser(uint(uid))
 	ctx.JSON(http.StatusOK, result)
 }
 

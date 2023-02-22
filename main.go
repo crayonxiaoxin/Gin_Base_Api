@@ -50,6 +50,7 @@ func main() {
 				user.GET("/:id/meta", controllers.GetUserMetas)
 				user.POST("/:id/meta", controllers.UpdateUserMeta)
 				user.DELETE("/:id/meta", controllers.DeleteUserMeta)
+
 			}
 
 			// 文件上传

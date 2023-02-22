@@ -6,7 +6,7 @@ import (
 
 func init() {
 	// 创建或更新数据表结构
-	utils.DB.AutoMigrate(&User{})
+	utils.DB.AutoMigrate(&Role{}, &User{})
 }
 
 // 用户
@@ -14,11 +14,27 @@ type User struct {
 	utils.BaseModel
 	UserLogin string `json:"user_login" gorm:"unique;not null"`
 	UserPass  string `json:"user_pass" gorm:"not null"`
+	RoleId    uint   `json:"role_id" gorm:"not null"`
+	Role      Role   `json:"role"`
 }
 
 // 判断用户是否有效
 func (u *User) Valid() bool {
 	return u.ID > 0
+}
+
+// 判断用户是否拥有该权限
+// 只需要传入权限 id 或者 value
+func (u *User) Can(cap *Capability) bool {
+	if u.Valid() {
+		if u.Role.Valid() { // 如果 role 存在
+			return u.Role.Can(cap)
+		} else if u.RoleId > 0 { // 如果 roleId 存在
+			role := GetRole(int(u.RoleId))
+			return role.Can(cap)
+		}
+	}
+	return false
 }
 
 // 获取所有用户
@@ -30,13 +46,14 @@ func GetUsers(page int, pageSize int) (users []User, count int64) {
 		pageSize = 10
 	}
 	offset := (page - 1) * pageSize
-	utils.DB.Model(User{}).Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&users)
+	// utils.DB.Model(User{}).Preload("Role").Preload("Role.Capabilities").Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&users)
+	utils.DB.Model(User{}).Preload("Role").Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&users)
 	return
 }
 
 // 通过id获取用户
-func GetUser(uid int) (u *User) {
-	utils.DB.First(&u, uid)
+func GetUser(uid uint) (u *User) {
+	utils.DB.Model(User{}).Preload("Role").First(&u, uid)
 	return
 }
 
@@ -71,9 +88,9 @@ func AddUser(u *User) utils.Result {
 func UpdateUser(u *User) utils.Result {
 	var result = utils.Result{}
 	if u.ID > 0 { // id 是有效的
-		getu := GetUser(int(u.ID))
+		getu := GetUser(u.ID)
 		if getu.Valid() { // 用户存在
-			if u.UserLogin != getu.UserLogin { // 新用户名与旧用户名不同
+			if len(u.UserLogin) > 0 && u.UserLogin != getu.UserLogin { // 新用户名与旧用户名不同
 				if GetUserByLogin(u.UserLogin).Valid() { // 新用户名已存在，不允许添加
 					result.ResultCode = utils.ERR_USER_EXISTS
 					return result
@@ -90,12 +107,19 @@ func UpdateUser(u *User) utils.Result {
 					u.UserPass = encryptUserPass
 				}
 			}
+			// 如果角色存在
+			role_obj := GetRoleObj(u.RoleId)
+			if role_obj.Valid() {
+				u.RoleId = role_obj.ID
+			} else {
+				u.RoleId = getu.RoleId
+			}
 			err := utils.DB.Updates(&u).Error // 更新用户
 			if err != nil {
 				result.ResultCode = utils.ERR_USER_UPDATE
 			} else {
 				result.ResultCode = utils.SUCCESS
-				result.Data = GetUser(int(u.ID)) // 返回最新的用户信息
+				result.Data = GetUser(u.ID) // 返回最新的用户信息
 			}
 		} else {
 			result.ResultCode = utils.ERR_USER_NOT_EXISTS
@@ -119,7 +143,7 @@ func Register(u *User) utils.Result {
 }
 
 // 删除
-func DeleteUser(uid int) utils.Result {
+func DeleteUser(uid uint) utils.Result {
 	var result = utils.Result{}
 	if uid > 0 {
 		u := GetUser(uid)
@@ -135,6 +159,32 @@ func DeleteUser(uid int) utils.Result {
 		}
 	} else {
 		result.ResultCode = utils.ERR_PARAMS
+	}
+	return result
+}
+
+// 設置用戶角色
+func AddRole2User(role_id uint, uid uint) utils.Result {
+	var result = utils.Result{}
+	if role_id == 0 || uid == 0 {
+		result.ResultCode = utils.ERR_PARAMS
+	} else {
+		user_obj := GetUser(uid)
+		if user_obj.Valid() {
+			role_obj := GetRoleObj(role_id)
+			if role_obj.Valid() {
+				err := utils.DB.Model(&User{}).Update("RoleId", role_obj.ID).Error
+				if err != nil {
+					result.ResultCode = utils.ERR_USER_ADD_ROLE
+				} else {
+					result.ResultCode = utils.SUCCESS
+				}
+			} else {
+				result.ResultCode = utils.ERR_ROLE_NOT_EXISTS
+			}
+		} else {
+			result.ResultCode = utils.ERR_USER_NOT_EXISTS
+		}
 	}
 	return result
 }

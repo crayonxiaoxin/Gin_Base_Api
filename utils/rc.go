@@ -39,14 +39,15 @@ var (
 	ERR_USER_EXISTS           = ResultCode{1102, "用戶已存在"}
 	ERR_USER_INVALID_USERNAME = ResultCode{1103, "賬戶錯誤"}
 	ERR_USER_INVALID_PASSWORD = ResultCode{1104, "密碼錯誤"}
-	ERR_USER_ADD              = ResultCode{1105, "添加文章失敗"}
-	ERR_USER_UPDATE           = ResultCode{1106, "更新文章失敗"}
-	ERR_USER_DELETE           = ResultCode{1107, "刪除文章失敗"}
+	ERR_USER_ADD              = ResultCode{1105, "添加用戶失敗"}
+	ERR_USER_UPDATE           = ResultCode{1106, "更新用戶失敗"}
+	ERR_USER_DELETE           = ResultCode{1107, "刪除用戶失敗"}
+	ERR_USER_ADD_ROLE         = ResultCode{1108, "設置用戶角色失敗"}
 
 	ERR_USER_META_NOT_EXISTS = ResultCode{1111, "用戶元數據不存在"}
-	ERR_USER_META_ADD        = ResultCode{1112, "添加文章失敗"}
-	ERR_USER_META_UPDATE     = ResultCode{1113, "更新文章失敗"}
-	ERR_USER_META_DELETE     = ResultCode{1114, "刪除文章失敗"}
+	ERR_USER_META_ADD        = ResultCode{1112, "添加用戶元數據失敗"}
+	ERR_USER_META_UPDATE     = ResultCode{1113, "更新用戶元數據失敗"}
+	ERR_USER_META_DELETE     = ResultCode{1114, "刪除用戶元數據失敗"}
 
 	// upload
 	ERR_UPLOAD_MKDIR           = ResultCode{1201, "無法創建文件夾"}
