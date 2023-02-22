@@ -53,7 +53,9 @@ GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build .
 
 ### 部署
 > 将 可执行文件 以及 conf.ini 上传到服务器
+
 > 通过 Apache 或 Nginx 反代即可配置 domain
+
 
 ### 目录结构
 ```

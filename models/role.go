@@ -112,7 +112,7 @@ func init() {
 
 	// 添加初始管理员
 	role_admin := GetRoleByValue(ROLE_ADMIN)
-	AddUser(&User{UserLogin: "eftech", UserPass: "@ne2Nine", RoleId: role_admin.ID})
+	AddUser(&User{UserLogin: "eftech", UserPass: "123456", RoleId: role_admin.ID})
 }
 
 func (role *Role) Valid() bool {
