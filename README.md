@@ -46,10 +46,12 @@ swag init
 文档地址：/swagger/index.html 或 /docs
 
 
+
 ### 生产环境 build
 ```
 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build . 
 ```
+
 
 ### 部署
 > 将 可执行文件 以及 conf.ini 上传到服务器
