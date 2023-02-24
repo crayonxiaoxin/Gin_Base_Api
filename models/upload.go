@@ -32,16 +32,22 @@ func (m *Media) Valid() bool {
 	return m.ID > 0
 }
 
-// 获取所有媒体
-func GetAllMedia(page int, pageSize int) (media []Media, count int64) {
-	if page <= 0 {
-		page = 1
+type MediaListOptions struct {
+	utils.ListOptions
+	Uid int
+}
+
+// 获取媒体列表
+func GetAllMedia(options *MediaListOptions) (media []Media, count int64) {
+	options.Prepare()
+	tx := utils.DB.Model(Media{})
+	if options.Keyword != "" {
+		tx = tx.Where("name like ? or mime like ?", options.EscKeyword(), options.EscKeyword())
 	}
-	if pageSize <= 0 {
-		pageSize = 10
+	if options.Uid > 0 {
+		tx = tx.Where("uid = ?", options.Uid)
 	}
-	offset := (page - 1) * pageSize
-	utils.DB.Model(Media{}).Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&media)
+	tx.Order(options.Order).Count(&count).Limit(options.PageSize).Offset(options.Offset()).Find(&media)
 	return
 }
 

@@ -48,8 +48,11 @@ func RemoveFile(ctx *gin.Context) {
 //	@Title			GetAll
 //	@Summary		获取所有媒体
 //	@Description	获取所有媒体
-//	@Param			page	query	int	false	"页码"
-//	@Param			size	query	int	false	"每页数量"
+//	@Param			page	query	int		false	"页码"
+//	@Param			size	query	int		false	"每页数量"
+//	@Param			keyword	query	string	false	"关键词，默认空"
+//	@Param			order	query	string	false	"默认：id desc"
+//	@Param			uid		query	int		false	"要筛选的用户id"
 //	@Tags			媒体相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -57,9 +60,19 @@ func RemoveFile(ctx *gin.Context) {
 func GetAllFiles(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
-	pageInt := utils.Str2Int(page)
-	sizeInt := utils.Str2Int(size)
-	users, count := models.GetAllMedia(int(pageInt), int(sizeInt))
+	keyword := ctx.Query("keyword")
+	order := ctx.Query("order")
+	uid := ctx.Query("uid")
+	options := &models.MediaListOptions{
+		ListOptions: utils.ListOptions{
+			Page:     utils.Str2Int(page),
+			PageSize: utils.Str2Int(size),
+			Keyword:  keyword,
+			Order:    order,
+		},
+		Uid: utils.Str2Int(uid),
+	}
+	users, count := models.GetAllMedia(options)
 	data := make(map[string]interface{})
 	data["list"] = users
 	data["count"] = count

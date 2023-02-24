@@ -12,8 +12,11 @@ import (
 //	@Title			GetUsers
 //	@Summary		获取所有用户
 //	@Description	获取所有用户
-//	@Param			page	query	int	false	"页码"
-//	@Param			size	query	int	false	"每页数量"
+//	@Param			page	query	int		false	"页码"
+//	@Param			size	query	int		false	"每页数量"
+//	@Param			keyword	query	string	false	"关键词，默认空"
+//	@Param			order	query	string	false	"默认：id desc"
+//	@Param			role_id	query	int		false	"要筛选的角色id"
 //	@Tags			用户相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -21,9 +24,19 @@ import (
 func GetUsers(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
-	pageInt := utils.Str2Int(page)
-	sizeInt := utils.Str2Int(size)
-	users, count := models.GetUsers(int(pageInt), int(sizeInt))
+	keyword := ctx.Query("keyword")
+	order := ctx.Query("order")
+	role_id := ctx.Query("role_id")
+	options := &models.UserListOptions{
+		ListOptions: utils.ListOptions{
+			Page:     utils.Str2Int(page),
+			PageSize: utils.Str2Int(size),
+			Keyword:  keyword,
+			Order:    order,
+		},
+		RoleId: utils.Str2Int(role_id),
+	}
+	users, count := models.GetUsers(options)
 	data := make(map[string]interface{})
 	data["list"] = users
 	data["count"] = count

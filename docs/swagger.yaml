@@ -28,6 +28,14 @@ paths:
         in: query
         name: size
         type: integer
+      - description: 关键词，默认空
+        in: query
+        name: keyword
+        type: string
+      - description: 默认：id desc
+        in: query
+        name: order
+        type: string
       responses:
         "200":
           description: OK
@@ -135,6 +143,18 @@ paths:
         in: query
         name: size
         type: integer
+      - description: 关键词，默认空
+        in: query
+        name: keyword
+        type: string
+      - description: 默认：id desc
+        in: query
+        name: order
+        type: string
+      - description: 要筛选的用户id
+        in: query
+        name: uid
+        type: integer
       responses:
         "200":
           description: OK
@@ -194,6 +214,30 @@ paths:
         in: query
         name: size
         type: integer
+      - description: 关键词，默认空
+        in: query
+        name: keyword
+        type: string
+      - description: 默认：id desc
+        in: query
+        name: order
+        type: string
+      - description: 作者id
+        in: query
+        name: uid
+        type: integer
+      - description: YYYY-MM-DD
+        in: query
+        name: date
+        type: string
+      - description: publish/draft
+        in: query
+        name: status
+        type: string
+      - description: 文章类型
+        in: query
+        name: type
+        type: string
       responses:
         "200":
           description: OK
@@ -427,6 +471,14 @@ paths:
         in: query
         name: size
         type: integer
+      - description: 关键词，默认空
+        in: query
+        name: keyword
+        type: string
+      - description: 默认：id desc
+        in: query
+        name: order
+        type: string
       responses:
         "200":
           description: OK
@@ -573,6 +625,18 @@ paths:
       - description: 每页数量
         in: query
         name: size
+        type: integer
+      - description: 关键词，默认空
+        in: query
+        name: keyword
+        type: string
+      - description: 默认：id desc
+        in: query
+        name: order
+        type: string
+      - description: 要筛选的角色id
+        in: query
+        name: role_id
         type: integer
       responses:
         "200":

@@ -37,17 +37,23 @@ func (u *User) Can(cap *Capability) bool {
 	return false
 }
 
-// 获取所有用户
-func GetUsers(page int, pageSize int) (users []User, count int64) {
-	if page <= 0 {
-		page = 1
-	}
-	if pageSize <= 0 {
-		pageSize = 10
-	}
-	offset := (page - 1) * pageSize
+type UserListOptions struct {
+	utils.ListOptions
+	RoleId int
+}
+
+// 获取用户列表
+func GetUsers(options *UserListOptions) (users []User, count int64) {
+	options.Prepare()
 	// utils.DB.Model(User{}).Preload("Role").Preload("Role.Capabilities").Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&users)
-	utils.DB.Model(User{}).Preload("Role").Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&users)
+	tx := utils.DB.Model(User{}).Preload("Role")
+	if options.Keyword != "" {
+		tx = tx.Where("user_login like ?", options.EscKeyword())
+	}
+	if options.RoleId > 0 {
+		tx = tx.Where("role_id = ?", options.RoleId)
+	}
+	tx.Order(options.Order).Count(&count).Limit(options.PageSize).Offset(options.Offset()).Find(&users)
 	return
 }
 

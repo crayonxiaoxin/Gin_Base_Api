@@ -145,17 +145,28 @@ func (cap *Capability) Valid() bool {
 }
 
 // 获取角色列表
-func GetRoles(page int, pageSize int) (roles []Role, count int64) {
-	if page <= 0 {
-		page = 1
+func GetRoles(options *utils.ListOptions) (roles []Role, count int64) {
+	options.Prepare()
+	tx := utils.DB.Model(&Role{}).Preload("Capabilities")
+	if options.Keyword != "" {
+		tx = tx.Where("role_name like ? or role_value like ?", options.EscKeyword(), options.EscKeyword())
 	}
-	if pageSize <= 0 {
-		pageSize = 10
-	}
-	offset := (page - 1) * pageSize
-	utils.DB.Model(&Role{}).Preload("Capabilities").Order("id asc").Count(&count).Limit(pageSize).Offset(offset).Find(&roles)
+	tx.Order(options.Order).Count(&count).Limit(options.PageSize).Offset(options.Offset()).Find(&roles)
 	return
 }
+
+// // 获取角色列表
+// func GetRoles(page int, pageSize int) (roles []Role, count int64) {
+// 	if page <= 0 {
+// 		page = 1
+// 	}
+// 	if pageSize <= 0 {
+// 		pageSize = 10
+// 	}
+// 	offset := (page - 1) * pageSize
+// 	utils.DB.Model(&Role{}).Preload("Capabilities").Order("id asc").Count(&count).Limit(pageSize).Offset(offset).Find(&roles)
+// 	return
+// }
 
 // 通过 id 获取 role
 func GetRole(id int) (role *Role) {
@@ -215,15 +226,13 @@ func DeleteRole(id int) utils.Result {
 }
 
 // 获取能力（權限）
-func GetCapabilities(page int, pageSize int) (caps []Capability, count int64) {
-	if page <= 0 {
-		page = 1
+func GetCapabilities(options *utils.ListOptions) (caps []Capability, count int64) {
+	options.Prepare()
+	tx := utils.DB.Model(&Capability{})
+	if options.Keyword != "" {
+		tx = tx.Where("cap_name like ? or cap_value like ?", options.EscKeyword(), options.EscKeyword())
 	}
-	if pageSize <= 0 {
-		pageSize = 10
-	}
-	offset := (page - 1) * pageSize
-	utils.DB.Model(&Capability{}).Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&caps)
+	tx.Order(options.Order).Count(&count).Limit(options.PageSize).Offset(options.Offset()).Find(&caps)
 	return
 }
 

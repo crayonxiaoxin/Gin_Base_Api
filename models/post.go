@@ -25,18 +25,50 @@ func (post *Post) Valid() bool {
 	return post.ID > 0
 }
 
+type PostListOptions struct {
+	utils.ListOptions
+
+	Uid    int
+	Date   string
+	Status string
+	Type   string
+}
+
 // 获取所有 posts
-func GetPosts(page int, pageSize int) (posts []Post, count int64) {
-	if page <= 0 {
-		page = 1
+func GetPosts(options *PostListOptions) (posts []Post, count int64) {
+	options.Prepare()
+	tx := utils.DB.Model(Post{})
+	if options.Keyword != "" {
+		tx = tx.Where("post_title like ? or post_content like ?", options.EscKeyword(), options.EscKeyword())
 	}
-	if pageSize <= 0 {
-		pageSize = 10
+	if options.Uid > 0 {
+		tx = tx.Where("uid = ?", options.Uid)
 	}
-	offset := (page - 1) * pageSize
-	utils.DB.Model(Post{}).Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&posts)
+	if options.Date != "" {
+		tx = tx.Where("date(post_date) = ?", options.Date)
+	}
+	if options.Status != "" {
+		tx = tx.Where("post_status = ?", options.Status)
+	}
+	if options.Type != "" {
+		tx = tx.Where("post_type = ?", options.Type)
+	}
+	tx.Order(options.Order).Count(&count).Limit(options.PageSize).Offset(options.Offset()).Find(&posts)
 	return
 }
+
+// // 获取所有 posts
+// func GetPosts(page int, pageSize int) (posts []Post, count int64) {
+// 	if page <= 0 {
+// 		page = 1
+// 	}
+// 	if pageSize <= 0 {
+// 		pageSize = 10
+// 	}
+// 	offset := (page - 1) * pageSize
+// 	utils.DB.Model(Post{}).Order("id desc").Count(&count).Limit(pageSize).Offset(offset).Find(&posts)
+// 	return
+// }
 
 // 通过 id 获取 post
 func GetPost(id int) (post *Post) {

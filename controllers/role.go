@@ -11,8 +11,10 @@ import (
 //	@Title			GetRoles
 //	@Summary		获取角色
 //	@Description	获取角色
-//	@Param			page	query	int	false	"页码"
-//	@Param			size	query	int	false	"每页数量"
+//	@Param			page	query	int		false	"页码"
+//	@Param			size	query	int		false	"每页数量"
+//	@Param			keyword	query	string	false	"关键词，默认空"
+//	@Param			order	query	string	false	"默认：id desc"
 //	@Tags			角色与权限相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -20,9 +22,15 @@ import (
 func GetRoles(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
-	pageInt := utils.Str2Int(page)
-	sizeInt := utils.Str2Int(size)
-	users, count := models.GetRoles(int(pageInt), int(sizeInt))
+	keyword := ctx.Query("keyword")
+	order := ctx.Query("order")
+	options := &utils.ListOptions{
+		Page:     utils.Str2Int(page),
+		PageSize: utils.Str2Int(size),
+		Keyword:  keyword,
+		Order:    order,
+	}
+	users, count := models.GetRoles(options)
 	data := make(map[string]interface{})
 	data["list"] = users
 	data["count"] = count
@@ -93,8 +101,10 @@ func DeleteRole(ctx *gin.Context) {
 //	@Title			GetCapabilities
 //	@Summary		获取能力（权限）
 //	@Description	获取能力（权限）
-//	@Param			page	query	int	false	"页码"
-//	@Param			size	query	int	false	"每页数量"
+//	@Param			page	query	int		false	"页码"
+//	@Param			size	query	int		false	"每页数量"
+//	@Param			keyword	query	string	false	"关键词，默认空"
+//	@Param			order	query	string	false	"默认：id desc"
 //	@Tags			角色与权限相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -102,9 +112,15 @@ func DeleteRole(ctx *gin.Context) {
 func GetCapabilities(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
-	pageInt := utils.Str2Int(page)
-	sizeInt := utils.Str2Int(size)
-	users, count := models.GetCapabilities(int(pageInt), int(sizeInt))
+	keyword := ctx.Query("keyword")
+	order := ctx.Query("order")
+	options := &utils.ListOptions{
+		Page:     utils.Str2Int(page),
+		PageSize: utils.Str2Int(size),
+		Keyword:  keyword,
+		Order:    order,
+	}
+	users, count := models.GetCapabilities(options)
 	data := make(map[string]interface{})
 	data["list"] = users
 	data["count"] = count

@@ -11,8 +11,14 @@ import (
 //	@Title			GetPosts
 //	@Summary		获取所有文章
 //	@Description	获取所有文章
-//	@Param			page	query	int	false	"页码"
-//	@Param			size	query	int	false	"每页数量"
+//	@Param			page	query	int		false	"页码"
+//	@Param			size	query	int		false	"每页数量"
+//	@Param			keyword	query	string	false	"关键词，默认空"
+//	@Param			order	query	string	false	"默认：id desc"
+//	@Param			uid		query	int		false	"作者id"
+//	@Param			date	query	string	false	"YYYY-MM-DD"
+//	@Param			status	query	string	false	"publish/draft"
+//	@Param			type	query	string	false	"文章类型"
 //	@Tags			文章相关
 //	@security		JwtAuth
 //	@Success		200	{object}	utils.Result
@@ -20,9 +26,25 @@ import (
 func GetPosts(ctx *gin.Context) {
 	page := ctx.Query("page")
 	size := ctx.Query("size")
-	pageInt := utils.Str2Int(page)
-	sizeInt := utils.Str2Int(size)
-	posts, count := models.GetPosts(int(pageInt), int(sizeInt))
+	keyword := ctx.Query("keyword")
+	order := ctx.Query("order")
+	uid := ctx.Query("uid")
+	date := ctx.Query("date")
+	status := ctx.Query("status")
+	post_type := ctx.Query("type")
+	options := &models.PostListOptions{
+		ListOptions: utils.ListOptions{
+			Page:     utils.Str2Int(page),
+			PageSize: utils.Str2Int(size),
+			Keyword:  keyword,
+			Order:    order,
+		},
+		Uid:    utils.Str2Int(uid),
+		Date:   date,
+		Status: status,
+		Type:   post_type,
+	}
+	posts, count := models.GetPosts(options)
 	data := make(map[string]interface{})
 	data["list"] = posts
 	data["count"] = count
