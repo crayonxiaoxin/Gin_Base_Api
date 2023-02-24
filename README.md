@@ -58,6 +58,40 @@ GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build .
 
 > 通过 Apache 或 Nginx 反代即可配置 domain
 
+Nginx 配置示例：
+```
+server
+{
+    listen 80;
+    server_name api.example.xyz;
+    index index.html index.htm default.htm default.html;
+    root /var/www/gin/hello_gin_api;
+
+    # HTTP反向代理相关配置开始 >>>
+    location ~ /purge(/.*) {
+        proxy_cache_purge cache_one 127.0.0.1$request_uri$is_args$args;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8083;
+        proxy_set_header Host 127.0.0.1:$server_port;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header REMOTE-HOST $remote_addr;
+        add_header X-Cache $upstream_cache_status;
+        proxy_set_header X-Host $host:$server_port;
+        proxy_set_header X-Scheme $scheme;
+        proxy_connect_timeout 30s;
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 30s;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+    # HTTP反向代理相关配置结束 <<<
+}
+```
+
 
 ### 目录结构
 ```
