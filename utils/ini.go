@@ -66,7 +66,7 @@ func LoadINI(fileName string) (*ConfigINI, error) {
 				// 匹配章节
 				regSection, err2 := regexp.Compile(`^\[(.*)\]$`)
 				if err2 == nil {
-					submatch := regSection.FindStringSubmatch(line) // [0]-匹配的字符串本身，[1]第一个括号的值
+					submatch := regSection.FindStringSubmatch(line) // [0]-匹配的字符串，[1]第一个括号的值
 					if len(submatch) > 1 {
 						section := strings.TrimSpace(submatch[1])
 						// 匹配到章节，切换到这个章节
@@ -74,7 +74,7 @@ func LoadINI(fileName string) (*ConfigINI, error) {
 					}
 				}
 				// 匹配键值对
-				regKeyValue, err3 := regexp.Compile(`(.*)=(.*)`) // [0]-匹配的字符串本身，[1]key，[2]value
+				regKeyValue, err3 := regexp.Compile(`(.*)=(.*)`) // [0]-匹配的字符串，[1]key，[2]value
 				if err3 == nil {
 					submatch := regKeyValue.FindStringSubmatch(line)
 					if len(submatch) > 2 {
