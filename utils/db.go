@@ -5,7 +5,6 @@ import (
 	"os"
 	"sync"
 
-	"github.com/Unknwon/goconfig"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -30,7 +29,7 @@ func mySQL() *gorm.DB {
 		isProd := dev != "1"
 
 		// 加载配置文件
-		cf, err := goconfig.LoadConfigFile("./conf.ini")
+		cf, err := LoadINI("./conf.ini")
 		if err != nil {
 			panic("Could not load config file.")
 		}
@@ -42,10 +41,10 @@ func mySQL() *gorm.DB {
 		} else {
 			section = "dev"
 		}
-		db_user := cf.MustValue(section, "db_user")
-		db_pass := cf.MustValue(section, "db_pass")
-		db_host := cf.MustValue(section, "db_host")
-		db_name := cf.MustValue(section, "db_name")
+		db_user := cf.Value(section, "db_user")
+		db_pass := cf.Value(section, "db_pass")
+		db_host := cf.Value(section, "db_host")
+		db_name := cf.Value(section, "db_name")
 		// fmt.Printf("db_user: %v\n", db_user)
 		// fmt.Printf("db_pass: %v\n", db_pass)
 		// fmt.Printf("db_host: %v\n", db_host)

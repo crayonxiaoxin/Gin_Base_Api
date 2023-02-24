@@ -16,3 +16,17 @@ func Str2Int(str string, def ...int) int {
 	}
 	return numInt
 }
+
+// 类似 php array_map
+//
+// Use:
+//
+//	postIds := utils.ArrayMap(posts,func(post Post) int {
+//		return int(post.ID)
+//	})
+func ArrayMap[T any, R any](items []T, callback func(T) R) (res []R) {
+	for _, item := range items {
+		res = append(res, callback(item))
+	}
+	return
+}

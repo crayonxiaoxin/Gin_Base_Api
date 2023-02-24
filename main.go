@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Unknwon/goconfig"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -28,9 +27,9 @@ func main() {
 
 	// 默认端口
 	var port = 8083
-	cf, err := goconfig.LoadConfigFile("./conf.ini")
+	cf, err := utils.LoadINI("./conf.ini")
 	if err == nil { // 从 conf.ini 读取端口，如果不合法，则继续使用默认端口
-		port = utils.Str2Int(cf.MustValue("", "port"), port)
+		port = utils.Str2Int(cf.Value("", "port"), port)
 	}
 
 	r := gin.Default()
