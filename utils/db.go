@@ -1,8 +1,8 @@
 package utils
 
 import (
+	"flag"
 	"fmt"
-	"os"
 	"sync"
 
 	"gorm.io/driver/mysql"
@@ -24,9 +24,11 @@ func mySQL() *gorm.DB {
 		mutex.Lock()
 		defer mutex.Unlock()
 
-		// 读取环境变量（只有 dev=1 时，才是开发环境，其他默认生产环境）
-		dev := os.Getenv("dev")
-		isProd := dev != "1"
+		// 读取环境变量（只有 -dev=1/true 时，才是开发环境，其他默认生产环境）
+		// go run . -dev=1 或 go run . -dev=true
+		dev := flag.Bool("dev", false, "是否开发环境")
+		flag.Parse()
+		isProd := !*dev
 
 		// 加载配置文件
 		cf, err := LoadINI("./conf.ini")

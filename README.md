@@ -34,7 +34,7 @@ go mod tidy
 
 ### 运行
 ```
-dev=1 go run .
+go run . -dev=true
 ```
 
 
